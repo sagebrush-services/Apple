@@ -1,0 +1,102 @@
+lookup_fields:
+  - code
+records:
+  - code: personal_name
+    prompt: What is your name?
+    help_text: Please include your first, middle, and last name.
+    question_type: string
+  - code: personal_address
+    prompt: What is your personal address?
+    question_type: address
+    help_text: Please verify your address.
+  - code: address
+    prompt: What is the address for {{for_label}}?
+    question_type: address
+    help_text: Please enter all of the fields.
+  - code: personal_ssn
+    prompt: What is your Social Security Number?
+    question_type: secret
+    help_text: Please use your 9-digit social security number.
+  - code: annual_or_amended
+    prompt: Is this an original or amended form?
+    question_type: yes_no
+    help_text: Please indicate if you are amending a previous application.
+  - code: nevada_business_id
+    prompt: What is the Nevada Business Identification Number?
+    question_type: string
+    help_text: Your Nevada Business Identification Number is given by the Secretary of State
+  - code: entity_name
+    prompt: What is the legal name of your LLC?
+    question_type: string
+    help_text: Enter the full legal name as it will appear on official documents with the Nevada Secretary of State.
+  - code: org
+    prompt: What organization are we referencing as {label}?
+    question_type: org
+    help_text: The organization must pre-exist as an org record within Neon Law.
+  - code: org_representative
+    prompt: Who will be the {label} for the {parent_label}?
+    question_type: person
+    help_text: The organization must pre-exist as an org record within Neon Law.
+  - code: person
+    prompt: Who is the {{label}}?
+    question_type: person
+    help_text: The person must pre-exist as a person record within Neon Law.
+  - code: neon_person
+    prompt: Who is the {label} for Neon Law?
+    question_type: person
+    help_text: Who from Neon Law will be signing this document on our behalf?
+  - code: reviewed_by_staff
+    prompt: Has the questionnaire been reviewed by Neon Law Staff?
+    help_text: This is not legal advice.
+    question_type: yes_no
+  - code: issuance
+    prompt: What stock issuance is the subject matter of this contract?
+    help_text: A stock issuance refers to one already tracked in Neon Law.
+    question_type: issuance
+  - code: filed_with_sos
+    prompt: Was this document filed with the Secretary of State?
+    help_text: |
+      As a staff member of Neon Law, you certify that you have taken care of this document in Neon Law or otherwise
+      interacted with the Secretary of State.
+    question_type: yes_no
+  - code: annual_or_amended
+    prompt: Is this an original annual application or is it an amendment to a previous application?
+    help_text: A new LLC registration for the Nevada Secretary of State begins with this question.
+    question_type: radio
+    choices:
+      original: Original Application
+      amended: Amendment to Previous Application
+  - code: staff_review
+    prompt: Did you review the workflow? What state would you place it in?
+    help_text: |
+      You certify that you have understood all of the documents and questionnaires relevant to this workflow and the workflow state can be updated.
+    question_type: radio
+    choices:
+      approved: Approved - Ready to File
+      needs_revision: Needs Revision
+      pending_client: Pending Client Response
+  - code: certified_mail
+    prompt: Please send the document via certified mail and collect the certified mail number and receipt.
+    help_text: |
+      Take a picture of the receipt and upload it as a document.
+    question_type: document
+  - code: signature
+    prompt: Please send the document for e-signature for {{for_label}}.
+    help_text: Only people can sign documents. A person will be identified by their label in a document.
+    question_type: signature
+  - code: notarization
+    prompt: Please send the document for notarization for {{for_label}}.
+    help_text: Only people can notarize documents. A person will be identified by their label in a document.
+    question_type: notarization
+  - code: registered_agent
+    prompt: Who is the registered agent for {{for_label}}?
+    help_text: If you have a valid subscription, you can use Neon Law Services as your registered agent.
+    question_type: registered_agent
+  - code: formation_date
+    prompt: When was the formation date of {{for_label}}?
+    help_text: When was the company formed?
+    question_type: date
+  - code: verify_eligible_lawyer
+    prompt: Can the lawyer represent the client in the context of the Notation?
+    help_text: We perform an ethics check here to ensure that lawyers abide by appropriate ethics rules.
+    question_type: person

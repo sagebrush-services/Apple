@@ -1,0 +1,81 @@
+lookup_fields:
+  - name
+  - entity_type_id
+records:
+  - name: Shook Law LLC
+    entity_type:
+      name: Multi Member LLC
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  - name: Neon Law
+    entity_type:
+      name: Multi Member LLC
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  - name: Neon Law Foundation
+    entity_type:
+      name: 501(c)(3) Non-Profit
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  - name: shook.family
+    entity_type:
+      name: Family Trust
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  - name: Nicholas Shook
+    entity_type:
+      name: Human
+      jurisdiction:
+        name: Washington
+  - name: Sagebrush Services LLC
+    entity_type:
+      name: Multi Member LLC
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  # Scenario 1: Solo Entrepreneur - Fully Complete
+  - name: Chen Consulting LLC
+    entity_type:
+      name: Single Member LLC
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  # Scenario 2: Multi-Member Startup - Partially Complete
+  - name: InnovateAI Solutions LLC
+    entity_type:
+      name: Multi Member LLC
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  # Scenario 3: Established C-Corp - Fully Complete
+  - name: Alpha Ventures Corp
+    entity_type:
+      name: C-Corp
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  # Scenario 4: Family Trust - Minimal Setup
+  - name: Williams Family Trust
+    entity_type:
+      name: Family Trust
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  # Scenario 5: Non-Profit - Partially Complete
+  - name: Community Reach Foundation
+    entity_type:
+      name: 501(c)(3) Non-Profit
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state
+  # Scenario 6: New Solo LLC - Minimal Setup
+  - name: Rivera Creative Studio LLC
+    entity_type:
+      name: Single Member LLC
+      jurisdiction:
+        name: Nevada
+        jurisdiction_type: state

@@ -1,0 +1,60 @@
+lookup_fields:
+  - address_id
+  - mailbox_number
+records:
+  - address:
+      entity:
+        name: Sagebrush Services LLC
+        entity_type:
+          name: Multi Member LLC
+          jurisdiction:
+            name: Nevada
+            jurisdiction_type: state
+      street: 405 Mae Anne Ave Ste 405-9000
+      city: Reno
+      state: NV
+      country: USA
+      zip: "89523"
+      is_verified: true
+    office:
+      name: Sagebrush Services Mailroom
+    mailbox_number: 9000
+    is_active: true
+  # Scenario 1: Solo Entrepreneur - Fully Complete
+  - address:
+      entity:
+        name: Chen Consulting LLC
+        entity_type:
+          name: Single Member LLC
+          jurisdiction:
+            name: Nevada
+            jurisdiction_type: state
+      street: 1250 S Virginia St Ste 200
+      city: Reno
+      state: NV
+      country: USA
+      zip: "89502"
+      is_verified: true
+    office:
+      name: Sagebrush Services Mailroom
+    mailbox_number: 9001
+    is_active: true
+  # Scenario 3: Established C-Corp - Fully Complete
+  - address:
+      entity:
+        name: Alpha Ventures Corp
+        entity_type:
+          name: C-Corp
+          jurisdiction:
+            name: Nevada
+            jurisdiction_type: state
+      street: 2600 Paseo Verde Pkwy Ste 300
+      city: Henderson
+      state: NV
+      country: USA
+      zip: "89074"
+      is_verified: true
+    office:
+      name: Sagebrush Services Mailroom
+    mailbox_number: 9002
+    is_active: true

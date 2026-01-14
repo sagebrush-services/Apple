@@ -1,0 +1,33 @@
+lookup_fields:
+  - person_id
+records:
+  # Scenario 1: Solo Entrepreneur - Fully Complete
+  - person:
+      email: marcus.chen@techconsult.com
+    role: customer
+  # Scenario 2: Multi-Member Startup - Partially Complete
+  - person:
+      email: sofia@innovateai.io
+    role: customer
+  - person:
+      email: david@innovateai.io
+    role: customer
+  # Scenario 3: Established C-Corp - Fully Complete
+  - person:
+      email: jennifer.park@alphaventures.com
+    role: customer
+  - person:
+      email: robert.t@alphaventures.com
+    role: customer
+  # Scenario 4: Family Trust - Minimal Setup
+  - person:
+      email: margaret.w@email.com
+    role: customer
+  # Scenario 5: Non-Profit - Partially Complete
+  - person:
+      email: sarah@communityreach.org
+    role: customer
+  # Scenario 6: New Solo LLC - Minimal Setup
+  - person:
+      email: alex.rivera@creativestudio.com
+    role: customer

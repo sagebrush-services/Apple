@@ -1,0 +1,81 @@
+lookup_fields:
+  - entity_id
+  - zip
+records:
+  - entity:
+      name: Sagebrush Services LLC
+      legal__entity_type:
+        name: Multi Member LLC
+        jurisdiction:
+          name: Nevada
+    street: 405 Mae Anne Ave Ste 405-9000
+    city: Reno
+    state: NV
+    country: USA
+    zip: "89523"
+    is_verified: true
+  # Scenario 1: Solo Entrepreneur - Fully Complete
+  - entity:
+      name: Chen Consulting LLC
+      legal__entity_type:
+        name: Single Member LLC
+        jurisdiction:
+          name: Nevada
+    street: 1250 S Virginia St Ste 200
+    city: Reno
+    state: NV
+    country: USA
+    zip: "89502"
+    is_verified: true
+  # Scenario 2: Multi-Member Startup - Partially Complete
+  - entity:
+      name: InnovateAI Solutions LLC
+      legal__entity_type:
+        name: Multi Member LLC
+        jurisdiction:
+          name: Nevada
+    street: 3900 Paradise Rd Ste 115
+    city: Las Vegas
+    state: NV
+    country: USA
+    zip: "89169"
+    is_verified: false
+  # Scenario 3: Established C-Corp - Fully Complete
+  - entity:
+      name: Alpha Ventures Corp
+      legal__entity_type:
+        name: C-Corp
+        jurisdiction:
+          name: Nevada
+    street: 2600 Paseo Verde Pkwy Ste 300
+    city: Henderson
+    state: NV
+    country: USA
+    zip: "89074"
+    is_verified: true
+  # Scenario 4: Family Trust - Minimal Setup
+  - entity:
+      name: Williams Family Trust
+      legal__entity_type:
+        name: Family Trust
+        jurisdiction:
+          name: Nevada
+    street: 825 Riverside Dr
+    city: Reno
+    state: NV
+    country: USA
+    zip: "89503"
+    is_verified: true
+  # Scenario 5: Non-Profit - Partially Complete
+  - entity:
+      name: Community Reach Foundation
+      legal__entity_type:
+        name: 501(c)(3) Non-Profit
+        jurisdiction:
+          name: Nevada
+    street: 101 N Carson St Ste 100
+    city: Carson City
+    state: NV
+    country: USA
+    zip: "89701"
+    is_verified: true

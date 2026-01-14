@@ -1,0 +1,55 @@
+lookup_fields:
+  - person_id
+  - entity_id
+records:
+  - person:
+      email: admin@sagebrush.services
+    entity:
+      name: Sagebrush Services LLC
+    role: admin
+  # Scenario 1: Solo Entrepreneur - Fully Complete
+  - person:
+      email: marcus.chen@techconsult.com
+    entity:
+      name: Chen Consulting LLC
+    role: admin
+  # Scenario 2: Multi-Member Startup - Partially Complete
+  - person:
+      email: sofia@innovateai.io
+    entity:
+      name: InnovateAI Solutions LLC
+    role: admin
+  - person:
+      email: david@innovateai.io
+    entity:
+      name: InnovateAI Solutions LLC
+    role: admin
+  # Scenario 3: Established C-Corp - Fully Complete
+  - person:
+      email: jennifer.park@alphaventures.com
+    entity:
+      name: Alpha Ventures Corp
+    role: admin
+  - person:
+      email: robert.t@alphaventures.com
+    entity:
+      name: Alpha Ventures Corp
+    role: admin
+  # Scenario 4: Family Trust - Minimal Setup
+  - person:
+      email: margaret.w@email.com
+    entity:
+      name: Williams Family Trust
+    role: admin
+  # Scenario 5: Non-Profit - Partially Complete
+  - person:
+      email: sarah@communityreach.org
+    entity:
+      name: Community Reach Foundation
+    role: admin
+  # Scenario 6: New Solo LLC - Minimal Setup
+  - person:
+      email: alex.rivera@creativestudio.com
+    entity:
+      name: Rivera Creative Studio LLC
+    role: admin

@@ -1,0 +1,37 @@
+lookup_fields:
+  - email
+records:
+  - email: admin@sagebrush.services
+    name: Admin User
+  - email: staff@sagebrush.services
+    name: Staff User
+  - email: customer@sagebrush.services
+    name: Example Customer
+  - email: nick@neonlaw.com
+    name: Nick Shook
+  # Scenario 1: Solo Entrepreneur
+  - email: marcus.chen@techconsult.com
+    name: Marcus Chen
+  # Scenario 2: Multi-Member Startup
+  - email: sofia@innovateai.io
+    name: Sofia Martinez
+  - email: david@innovateai.io
+    name: David Kim
+  # Scenario 3: Established C-Corp
+  - email: jennifer.park@alphaventures.com
+    name: Jennifer Park
+  - email: robert.t@alphaventures.com
+    name: Robert Thompson
+  # Scenario 4: Family Trust
+  - email: margaret.w@email.com
+    name: Margaret Williams
+  - email: thomas.w@email.com
+    name: Thomas Williams
+  # Scenario 5: Non-Profit
+  - email: sarah@communityreach.org
+    name: Dr. Sarah Johnson
+  - email: michael@communityreach.org
+    name: Michael Rivera
+  # Scenario 6: New Solo LLC
+  - email: alex.rivera@creativestudio.com
+    name: Alex Rivera

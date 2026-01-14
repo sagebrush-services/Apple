@@ -1,0 +1,12 @@
+lookup_fields:
+  - name
+records:
+  - name: Sagebrush Services Mailroom
+    address_line1: 5150 Mae Anne Ave Ste 405-9000
+    city: Reno
+    state: NV
+    postal_code: "89523"
+    country: USA
+    mailbox_start: 9000
+    mailbox_end: 9999
+    capacity: 1000
