@@ -1,0 +1,45 @@
+---
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on:
+      - ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: "actions/checkout@v4"
+
+      - name: Install Swift toolchain
+        uses: vapor/swiftly-action@v0.2
+        with:
+          toolchain: latest
+
+      - name: Run Swift Format Lint
+        run: swift format lint --strict --recursive --parallel --no-color-diagnostics .
+
+      - name: Cache Swift Package Manager dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build
+            ~/.cache/org.swift.swiftpm
+          key: spm-${{ runner.os }}-${{ hashFiles('Package.swift', 'Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-
+
+      - name: Run Swift Build (Strict - Fail on Warnings)
+        run: swift build --jobs 1 -Xswiftc -warnings-as-errors
+
+      - name: Run tests
+        run: swift test
