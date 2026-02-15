@@ -105,7 +105,15 @@ class APIClient: ObservableObject {
 
         guard httpResponse.statusCode == 200 else {
             let bodyPreview = String(data: data, encoding: .utf8) ?? "<non-utf8 body>"
-            print("⚠️ API request failed", request.httpMethod ?? "GET", endpoint, "status:", httpResponse.statusCode, "body:", bodyPreview)
+            print(
+                "⚠️ API request failed",
+                request.httpMethod ?? "GET",
+                endpoint,
+                "status:",
+                httpResponse.statusCode,
+                "body:",
+                bodyPreview
+            )
             throw APIError.httpError(httpResponse.statusCode)
         }
 

@@ -12,20 +12,20 @@ public final class FlowInstanceRecord: Model, Content, @unchecked Sendable {
     }
 
     public enum Status: String, Codable, Sendable {
-        case started           // Questionnaire in progress (< 100%)
-        case awaitingPayment   // Questionnaire complete, needs payment
-        case preparingDocs     // Payment received, generating documents
-        case awaitingNotary    // Documents ready, needs notarization
-        case readyToFile       // Ready for Secretary of State filing
-        case paperworkFiled    // Filed with SoS, awaiting confirmation
-        case formed            // Entity confirmed and created in system
-        case issue             // Problem occurred, needs attention
-        case cancelled         // Cancelled by admin or user
+        case started  // Questionnaire in progress (< 100%)
+        case awaitingPayment  // Questionnaire complete, needs payment
+        case preparingDocs  // Payment received, generating documents
+        case awaitingNotary  // Documents ready, needs notarization
+        case readyToFile  // Ready for Secretary of State filing
+        case paperworkFiled  // Filed with SoS, awaiting confirmation
+        case formed  // Entity confirmed and created in system
+        case issue  // Problem occurred, needs attention
+        case cancelled  // Cancelled by admin or user
 
         // Legacy statuses for backward compatibility
-        case active            // Maps to 'started' for existing records
-        case waiting           // Maps to 'awaitingPayment' for existing records
-        case completed         // Maps to 'formed' for existing records
+        case active  // Maps to 'started' for existing records
+        case waiting  // Maps to 'awaitingPayment' for existing records
+        case completed  // Maps to 'formed' for existing records
     }
 
     @ID(key: .id)

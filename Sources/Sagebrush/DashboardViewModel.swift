@@ -23,4 +23,4 @@ final class DashboardViewModel: ObservableObject {
         }
         isLoading = false
     }
- }
+}

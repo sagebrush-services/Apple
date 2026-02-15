@@ -107,7 +107,8 @@ public actor MailboxService {
             query = query.filter(\.$isActive == activeOnly)
         }
 
-        return try await query
+        return
+            try await query
             .sort(\.$mailboxNumber, .ascending)
             .all()
     }
@@ -256,7 +257,11 @@ public actor MailboxService {
         return mailbox
     }
 
-    public func activateMailbox(mailboxID: Int32, activatedAt: Date = Date(), forwardingEmail: String? = nil) async throws -> Mailbox {
+    public func activateMailbox(
+        mailboxID: Int32,
+        activatedAt: Date = Date(),
+        forwardingEmail: String? = nil
+    ) async throws -> Mailbox {
         guard let mailbox = try await Mailbox.find(mailboxID, on: database) else {
             throw Abort(.notFound, reason: "Mailbox not found")
         }

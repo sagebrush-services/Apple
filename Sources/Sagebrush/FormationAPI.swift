@@ -96,15 +96,55 @@ struct SubmitFormationStepRequest: Codable {
         static func from(answer: NotationEngine.FlowInstance.AnswerValue) -> AnswerPayload {
             switch answer {
             case .string(let value):
-                return AnswerPayload(type: "string", stringValue: value, choiceValue: nil, multiChoiceValue: nil, metadata: nil, payloadAlgorithm: nil, payloadValue: nil)
+                return AnswerPayload(
+                    type: "string",
+                    stringValue: value,
+                    choiceValue: nil,
+                    multiChoiceValue: nil,
+                    metadata: nil,
+                    payloadAlgorithm: nil,
+                    payloadValue: nil
+                )
             case .choice(let value):
-                return AnswerPayload(type: "choice", stringValue: nil, choiceValue: value, multiChoiceValue: nil, metadata: nil, payloadAlgorithm: nil, payloadValue: nil)
+                return AnswerPayload(
+                    type: "choice",
+                    stringValue: nil,
+                    choiceValue: value,
+                    multiChoiceValue: nil,
+                    metadata: nil,
+                    payloadAlgorithm: nil,
+                    payloadValue: nil
+                )
             case .multiChoice(let values):
-                return AnswerPayload(type: "multichoice", stringValue: nil, choiceValue: nil, multiChoiceValue: values, metadata: nil, payloadAlgorithm: nil, payloadValue: nil)
+                return AnswerPayload(
+                    type: "multichoice",
+                    stringValue: nil,
+                    choiceValue: nil,
+                    multiChoiceValue: values,
+                    metadata: nil,
+                    payloadAlgorithm: nil,
+                    payloadValue: nil
+                )
             case .metadata(let dictionary):
-                return AnswerPayload(type: "metadata", stringValue: nil, choiceValue: nil, multiChoiceValue: nil, metadata: dictionary, payloadAlgorithm: nil, payloadValue: nil)
+                return AnswerPayload(
+                    type: "metadata",
+                    stringValue: nil,
+                    choiceValue: nil,
+                    multiChoiceValue: nil,
+                    metadata: dictionary,
+                    payloadAlgorithm: nil,
+                    payloadValue: nil
+                )
             case .payload(let hash):
-                return AnswerPayload(type: "payload", stringValue: nil, choiceValue: nil, multiChoiceValue: nil, metadata: nil, payloadAlgorithm: hash.algorithm, payloadValue: hash.value)
+                return AnswerPayload(
+                    type: "payload",
+                    stringValue: nil,
+                    choiceValue: nil,
+                    multiChoiceValue: nil,
+                    metadata: nil,
+                    payloadAlgorithm: hash.algorithm,
+                    payloadValue: hash.value
+                )
             }
         }
     }

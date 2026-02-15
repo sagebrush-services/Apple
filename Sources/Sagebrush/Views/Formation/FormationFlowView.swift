@@ -29,9 +29,9 @@ struct FormationFlowView: View {
             }
         }
         .navigationTitle("Formation")
-#if os(iOS)
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-#endif
+        #endif
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK", role: .cancel) { errorMessage = nil }
         } message: {
@@ -143,7 +143,7 @@ struct FormationFlowView: View {
                 .frame(minHeight: 120)
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.secondary.opacity(0.2)))
         case .radio(let choices), .picker(let choices):
-                VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 12) {
                 ForEach(choices, id: \.value) { choice in
                     Button {
                         selectedChoice = choice.value
@@ -170,8 +170,11 @@ struct FormationFlowView: View {
                         toggleMultiSelect(choice.value)
                     } label: {
                         HStack {
-                            Image(systemName: selectedMultiChoices.contains(choice.value) ? "checkmark.square.fill" : "square")
-                                .foregroundColor(.accentColor)
+                            Image(
+                                systemName: selectedMultiChoices.contains(choice.value)
+                                    ? "checkmark.square.fill" : "square"
+                            )
+                            .foregroundColor(.accentColor)
                             Text(choice.label)
                                 .foregroundColor(.primary)
                         }
@@ -184,26 +187,38 @@ struct FormationFlowView: View {
                 }
             }
         case .toggle:
-            Toggle(isOn: Binding(get: {
-                selectedChoice == "yes"
-            }, set: { newValue in
-                selectedChoice = newValue ? "yes" : "no"
-            })) {
+            Toggle(
+                isOn: Binding(
+                    get: {
+                        selectedChoice == "yes"
+                    },
+                    set: { newValue in
+                        selectedChoice = newValue ? "yes" : "no"
+                    }
+                )
+            ) {
                 Text("Yes / No")
             }
             .toggleStyle(SwitchToggleStyle(tint: .accentColor))
         case .date:
-            DatePicker("", selection: Binding(get: {
-                let formatter = ISO8601DateFormatter()
-                if let stored = selectedChoice, let date = formatter.date(from: stored) {
-                    return date
-                }
-                return Date()
-            }, set: { date in
-                let formatter = ISO8601DateFormatter()
-                selectedChoice = formatter.string(from: date)
-            }), displayedComponents: .date)
-                .datePickerStyle(.graphical)
+            DatePicker(
+                "",
+                selection: Binding(
+                    get: {
+                        let formatter = ISO8601DateFormatter()
+                        if let stored = selectedChoice, let date = formatter.date(from: stored) {
+                            return date
+                        }
+                        return Date()
+                    },
+                    set: { date in
+                        let formatter = ISO8601DateFormatter()
+                        selectedChoice = formatter.string(from: date)
+                    }
+                ),
+                displayedComponents: .date
+            )
+            .datePickerStyle(.graphical)
         case .registeredAgent:
             registeredAgentInput
         case .organizationLookup:
@@ -228,8 +243,10 @@ struct FormationFlowView: View {
                     selectedAgentOption = option.identifier
                 } label: {
                     HStack {
-                        Image(systemName: selectedAgentOption == option.identifier ? "largecircle.fill.circle" : "circle")
-                            .foregroundColor(.accentColor)
+                        Image(
+                            systemName: selectedAgentOption == option.identifier ? "largecircle.fill.circle" : "circle"
+                        )
+                        .foregroundColor(.accentColor)
                         VStack(alignment: .leading) {
                             Text(option.label)
                             if let subtitle = option.subtitle {
@@ -296,7 +313,9 @@ struct FormationFlowView: View {
         isSubmitting = false
     }
 
-    private func buildAnswer(for component: QuestionStepDescriptor.Component) throws -> NotationEngine.FlowInstance.AnswerValue {
+    private func buildAnswer(
+        for component: QuestionStepDescriptor.Component
+    ) throws -> NotationEngine.FlowInstance.AnswerValue {
         switch component {
         case .singleLineText, .multiLineText, .organizationLookup:
             guard !textInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
@@ -319,7 +338,7 @@ struct FormationFlowView: View {
                 }
                 return .metadata([
                     "agent_type": "custom",
-                    "agent_name": customAgentName
+                    "agent_name": customAgentName,
                 ])
             }
             guard let metadata = RegisteredAgentOption.metadata(for: selectedAgentOption) else {
@@ -391,7 +410,7 @@ private struct RegisteredAgentOption {
             metadata: [
                 "agent_type": "neon_law",
                 "agent_name": "Neon Law",
-                "agent_email": "support@sagebrush.services"
+                "agent_email": "support@sagebrush.services",
             ]
         ),
         RegisteredAgentOption(
@@ -399,7 +418,7 @@ private struct RegisteredAgentOption {
             label: "Provide a different registered agent",
             subtitle: "Enter details manually",
             metadata: [:]
-        )
+        ),
     ]
 
     static func metadata(for identifier: String) -> [String: String]? {

@@ -1,4 +1,5 @@
 import SwiftUI
+
 #if os(iOS)
 import UIKit
 #elseif os(macOS)
@@ -17,9 +18,11 @@ struct EntitiesOverviewView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Entity management is on the way")
                         .font(.headline)
-                    Text("We’re polishing a dedicated experience to review officers, addresses, and compliance tasks. In the meantime, visit the web dashboard or contact support@sagebrush.services for updates.")
-                        .font(.body)
-                        .foregroundColor(.secondary)
+                    Text(
+                        "We’re polishing a dedicated experience to review officers, addresses, and compliance tasks. In the meantime, visit the web dashboard or contact support@sagebrush.services for updates."
+                    )
+                    .font(.body)
+                    .foregroundColor(.secondary)
                 }
                 .padding()
                 .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))

@@ -1,5 +1,5 @@
-import SwiftUI
 import Dali
+import SwiftUI
 
 struct PeopleListView: View {
     @EnvironmentObject var authManager: AuthenticationManager
@@ -10,10 +10,12 @@ struct PeopleListView: View {
     @State private var searchText = ""
 
     init() {
-        _apiClient = StateObject(wrappedValue: AdminAPIClient(
-            baseURL: URL(string: Config.environment.apiBaseURL)!,
-            authManager: AuthenticationManager.shared
-        ))
+        _apiClient = StateObject(
+            wrappedValue: AdminAPIClient(
+                baseURL: URL(string: Config.environment.apiBaseURL)!,
+                authManager: AuthenticationManager.shared
+            )
+        )
     }
 
     var filteredPeople: [Person] {
@@ -21,8 +23,8 @@ struct PeopleListView: View {
             return people
         } else {
             return people.filter { person in
-                person.email.lowercased().contains(searchText.lowercased()) ||
-                person.name.lowercased().contains(searchText.lowercased())
+                person.email.lowercased().contains(searchText.lowercased())
+                    || person.name.lowercased().contains(searchText.lowercased())
             }
         }
     }

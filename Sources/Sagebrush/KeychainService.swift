@@ -104,7 +104,8 @@ actor KeychainService {
         }
 
         guard let data = result as? Data,
-              let string = String(data: data, encoding: .utf8) else {
+            let string = String(data: data, encoding: .utf8)
+        else {
             throw KeychainError.loadFailed(status)
         }
 
@@ -153,7 +154,7 @@ actor KeychainService {
     func hasValidTokens() async -> Bool {
         if useInMemoryStore {
             guard let expirationString = inMemoryStore[.tokenExpiration],
-                  let interval = TimeInterval(expirationString)
+                let interval = TimeInterval(expirationString)
             else {
                 return false
             }

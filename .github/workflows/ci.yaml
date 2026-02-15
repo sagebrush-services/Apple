@@ -14,16 +14,11 @@ concurrency:
 jobs:
   tests:
     runs-on:
-      - ubuntu-latest
+      - macos-latest
     timeout-minutes: 60
 
     steps:
       - uses: "actions/checkout@v4"
-
-      - name: Install Swift toolchain
-        uses: vapor/swiftly-action@v0.2
-        with:
-          toolchain: latest
 
       - name: Run Swift Format Lint
         run: swift format lint --strict --recursive --parallel --no-color-diagnostics .

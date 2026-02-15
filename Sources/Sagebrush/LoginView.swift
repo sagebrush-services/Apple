@@ -20,7 +20,7 @@ struct LoginView: View {
                 colors: [
                     Color("SagebrushGreen"),
                     Color("SagebrushGreen").opacity(0.8),
-                    Color.white
+                    Color.white,
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -204,7 +204,7 @@ struct LoginView: View {
             }
         }
         .alert("Coming Soon!", isPresented: $showingComingSoon) {
-            Button("OK", role: .cancel) { }
+            Button("OK", role: .cancel) {}
         } message: {
             Text("This sign-in method will be available soon.")
         }

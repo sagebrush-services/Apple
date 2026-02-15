@@ -10,21 +10,21 @@ struct Config {
 
         var cognitoConfig: CognitoConfig {
             switch self {
-                                                                                                case .development:
+            case .development:
                 return CognitoConfig(
                     region: "us-west-2",
                     userPoolId: "us-west-2_fWEzNpuej",
                     clientId: "72evni4i91lf8kej3jspgd11os",
-                    domain: "sagebrush-dev-auth", // Domain prefix
+                    domain: "sagebrush-dev-auth",  // Domain prefix
                     redirectURI: "sagebrush://oauth/callback",
                     logoutURI: "sagebrush://logout"
                 )
-                        case .production:
+            case .production:
                 return CognitoConfig(
                     region: "us-west-2",
                     userPoolId: "us-west-2_sQFjXf8yV",
                     clientId: "68h8fqp4aih2l1a9gc01hokklf",
-                    domain: "sagebrush-prod-auth", // Domain prefix
+                    domain: "sagebrush-prod-auth",  // Domain prefix
                     redirectURI: "sagebrush://oauth/callback",
                     logoutURI: "sagebrush://logout"
                 )

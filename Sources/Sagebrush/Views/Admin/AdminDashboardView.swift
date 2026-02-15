@@ -1,5 +1,5 @@
-import SwiftUI
 import Dali
+import SwiftUI
 
 struct AdminDashboardView: View {
     @EnvironmentObject var authManager: AuthenticationManager
@@ -35,8 +35,8 @@ struct AdminDashboardView: View {
             }
         }
         .navigationTitle("Admin Panel")
-#if os(iOS)
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
-#endif
+        #endif
     }
 }

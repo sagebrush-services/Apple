@@ -291,7 +291,7 @@ struct AuthenticationManagerTests {
         let results = await withTaskGroup(of: Bool.self) { group in
             for _ in 0..<10 {
                 group.addTask { @MainActor in
-                    return authManager.isAdmin
+                    authManager.isAdmin
                 }
             }
 

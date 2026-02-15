@@ -11,7 +11,7 @@ struct WelcomeView: View {
             LinearGradient(
                 colors: [
                     Color("SagebrushGreen").opacity(0.1),
-                    Color.white
+                    Color.white,
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -24,21 +24,24 @@ struct WelcomeView: View {
                     WelcomeScreen(
                         iconName: "building.2.fill",
                         headline: "Your Nevada Business Address",
-                        description: "Professional Nevada address for incorporation, digital mail notifications, and worldwide forwarding"
+                        description:
+                            "Professional Nevada address for incorporation, digital mail notifications, and worldwide forwarding"
                     )
                     .tag(0)
 
                     WelcomeScreen(
                         iconName: "checkmark.shield.fill",
                         headline: "Stay Compliant Effortlessly",
-                        description: "Nevada Secretary of State filings, license compliance, and tax form management—all in one place"
+                        description:
+                            "Nevada Secretary of State filings, license compliance, and tax form management—all in one place"
                     )
                     .tag(1)
 
                     WelcomeScreen(
                         iconName: "chart.line.uptrend.xyaxis",
                         headline: "Manage Your Equity",
-                        description: "Professional cap table tracking, stock administration, and legal coordination for fundraising and growth"
+                        description:
+                            "Professional cap table tracking, stock administration, and legal coordination for fundraising and growth"
                     )
                     .tag(2)
 
@@ -48,10 +51,10 @@ struct WelcomeView: View {
                     })
                     .tag(3)
                 }
-#if os(iOS)
+                #if os(iOS)
                 .tabViewStyle(.page(indexDisplayMode: .always))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
-#endif
+                #endif
             }
         }
     }

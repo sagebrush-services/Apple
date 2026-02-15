@@ -7,7 +7,7 @@ let package = Package(
     name: "Sagebrush",
     platforms: [
         .macOS(.v15),
-        .iOS(.v17)
+        .iOS(.v17),
     ],
     products: [
         .library(
@@ -44,7 +44,7 @@ let package = Package(
             path: "Sources/Sagebrush",
             exclude: [
                 "Info.plist",
-                "Assets.xcassets"
+                "Assets.xcassets",
             ]
         ),
         .target(
@@ -67,7 +67,7 @@ let package = Package(
         .target(
             name: "NotationEngine",
             dependencies: [
-                .product(name: "Yams", package: "Yams"),
+                .product(name: "Yams", package: "Yams")
             ],
             path: "Sources/NotationEngine"
         ),

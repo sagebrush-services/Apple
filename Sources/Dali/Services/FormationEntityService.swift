@@ -49,8 +49,9 @@ public actor FormationEntityService {
 
         // Find the entity name step
         guard let nameStep = steps.first(where: { $0.questionCode == "entity_name" }),
-              let entityName = nameStep.answerPayload.stringValue,
-              !entityName.isEmpty else {
+            let entityName = nameStep.answerPayload.stringValue,
+            !entityName.isEmpty
+        else {
             throw ExtractionError.entityNameNotFound
         }
 
@@ -90,7 +91,8 @@ public actor FormationEntityService {
     ) async throws -> Entity {
         // Check if entity already exists
         if let existingEntityID = formation.respondentEntityID,
-           let existing = try await Entity.find(existingEntityID, on: database) {
+            let existing = try await Entity.find(existingEntityID, on: database)
+        {
             return existing
         }
 
@@ -113,9 +115,11 @@ public actor FormationEntityService {
     /// Defaults to Multi Member LLC in Nevada if not found.
     private func resolveEntityType(for typeName: String, jurisdiction: String) async throws -> Int32? {
         // Look up jurisdiction
-        guard let jurisdictionRecord = try await Jurisdiction.query(on: database)
-            .filter(\.$name == jurisdiction)
-            .first() else {
+        guard
+            let jurisdictionRecord = try await Jurisdiction.query(on: database)
+                .filter(\.$name == jurisdiction)
+                .first()
+        else {
             return nil
         }
 
@@ -140,7 +144,8 @@ public actor FormationEntityService {
         if let entityType = try await EntityType.query(on: database)
             .filter(\.$name == normalizedTypeName)
             .filter(\.$jurisdiction.$id == jurisdictionID)
-            .first() {
+            .first()
+        {
             return try entityType.requireID()
         }
 
@@ -148,7 +153,8 @@ public actor FormationEntityService {
         if let defaultType = try await EntityType.query(on: database)
             .filter(\.$name == "Multi Member LLC")
             .filter(\.$jurisdiction.$id == jurisdictionID)
-            .first() {
+            .first()
+        {
             return try defaultType.requireID()
         }
 

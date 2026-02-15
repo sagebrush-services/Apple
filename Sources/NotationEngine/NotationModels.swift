@@ -23,8 +23,8 @@ public struct Notation: Sendable, Hashable {
     public var code: String { metadata.code }
 }
 
-public extension Notation {
-    struct Metadata: Sendable, Hashable {
+extension Notation {
+    public struct Metadata: Sendable, Hashable {
         public let code: String
         public let title: String
         public let description: String?
@@ -43,7 +43,7 @@ public extension Notation {
         }
     }
 
-    struct Document: Sendable, Hashable {
+    public struct Document: Sendable, Hashable {
         public let url: URL?
         public let type: DocumentType
         public let mappings: [String: DocumentMapping]
@@ -175,7 +175,8 @@ public struct QuestionReference: Sendable, Hashable, Codable {
     /// Produces a human-friendly label derived from context tokens.
     public func resolvedLabel(defaultLabel: String? = nil) -> String? {
         guard !contextTokens.isEmpty else { return defaultLabel }
-        return contextTokens
+        return
+            contextTokens
             .map { $0.replacingOccurrences(of: "_", with: " ") }
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .map { $0.capitalized }

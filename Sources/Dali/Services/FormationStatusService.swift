@@ -60,12 +60,15 @@ public enum FormationStatusService {
             .readyToFile: [.paperworkFiled, .issue, .cancelled],
             .paperworkFiled: [.formed, .issue, .cancelled],
             .formed: [],  // Terminal state (except issue/cancelled)
-            .issue: [.started, .awaitingPayment, .preparingDocs, .awaitingNotary, .readyToFile, .paperworkFiled, .cancelled],  // Can retry from issue
+            .issue: [
+                .started, .awaitingPayment, .preparingDocs, .awaitingNotary, .readyToFile, .paperworkFiled, .cancelled,
+            ],  // Can retry from issue
             .cancelled: [],  // Terminal state
         ]
 
         guard let allowedTransitions = validTransitions[normalizedFrom],
-              allowedTransitions.contains(normalizedTo) else {
+            allowedTransitions.contains(normalizedTo)
+        else {
             throw TransitionError.invalidTransition(from: from, to: to)
         }
     }
@@ -140,7 +143,9 @@ public enum FormationStatusService {
             .readyToFile: [.paperworkFiled, .issue, .cancelled],
             .paperworkFiled: [.formed, .issue, .cancelled],
             .formed: [.issue, .cancelled],
-            .issue: [.started, .awaitingPayment, .preparingDocs, .awaitingNotary, .readyToFile, .paperworkFiled, .cancelled],
+            .issue: [
+                .started, .awaitingPayment, .preparingDocs, .awaitingNotary, .readyToFile, .paperworkFiled, .cancelled,
+            ],
             .cancelled: [],
         ]
 

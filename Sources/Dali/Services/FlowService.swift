@@ -34,7 +34,7 @@ public actor FlowService {
         var implicitSteps: [(state: StateMachine.StateID, answer: NotationEngine.FlowInstance.AnswerValue)] = []
 
         while let state = pendingState,
-              let implicitAnswer = implicitAnswer(notation: notation, stateID: state, kind: kind)
+            let implicitAnswer = implicitAnswer(notation: notation, stateID: state, kind: kind)
         {
             implicitSteps.append((state, implicitAnswer))
             pendingState = try runtime.submitAnswer(implicitAnswer)
@@ -125,7 +125,10 @@ public actor FlowService {
             throw ServiceError.notationNotFound(instance.notationCode)
         }
 
-        var runtime = NotationEngine.FlowInstance(notation: notation, kind: instance.kind == .client ? .client : .alignment)
+        var runtime = NotationEngine.FlowInstance(
+            notation: notation,
+            kind: instance.kind == .client ? .client : .alignment
+        )
         runtime.currentState = instance.currentState.map { StateMachine.StateID(rawValue: $0) }
         runtime.completed = instance.status == .completed
 
@@ -161,7 +164,7 @@ public actor FlowService {
 
 enum QuestionReferenceParser {
     static func extractQuestionCode(from stateID: String) -> String {
-        return stateID.split(separator: "__").first.map(String.init) ?? stateID
+        stateID.split(separator: "__").first.map(String.init) ?? stateID
     }
 
     static func extractContext(from stateID: String) -> [String] {
@@ -214,7 +217,8 @@ enum ProgressMapper {
         let questionCode = stateID.split(separator: "__").first.map(String.init) ?? stateID
 
         // Convert underscores to spaces and title case
-        return questionCode
+        return
+            questionCode
             .split(separator: "_")
             .map { $0.capitalized }
             .joined(separator: " ")
