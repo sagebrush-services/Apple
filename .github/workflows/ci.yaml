@@ -16,6 +16,9 @@ jobs:
     runs-on:
       - macos-latest
     timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - uses: "actions/checkout@v4"
@@ -38,3 +41,9 @@ jobs:
 
       - name: Run tests
         run: swift test
+
+      - name: Enable automerge
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge --auto --squash ${{ github.event.pull_request.number }}
