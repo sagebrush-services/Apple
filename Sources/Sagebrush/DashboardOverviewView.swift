@@ -1,4 +1,5 @@
 import SwiftUI
+
 #if os(iOS)
 import UIKit
 #elseif os(macOS)
@@ -70,9 +71,11 @@ struct DashboardOverviewView: View {
             Text("Hello, \(greetingName(for: snapshot))")
                 .font(.largeTitle)
                 .bold()
-            Text("You're managing \(snapshot.activeFormations.count) active formation(s) and \(snapshot.assignedMailboxes.count) Sagebrush mailbox(es).")
-                .font(.callout)
-                .foregroundColor(.secondary)
+            Text(
+                "You're managing \(snapshot.activeFormations.count) active formation(s) and \(snapshot.assignedMailboxes.count) Sagebrush mailbox(es)."
+            )
+            .font(.callout)
+            .foregroundColor(.secondary)
             if snapshot.pendingTaskCount > 0 {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(Color.green.opacity(0.15))
@@ -80,8 +83,10 @@ struct DashboardOverviewView: View {
                         HStack {
                             Image(systemName: "checkmark.seal")
                                 .foregroundColor(.green)
-                            Text("\(snapshot.pendingTaskCount) task\(snapshot.pendingTaskCount == 1 ? "" : "s") waiting")
-                                .font(.subheadline)
+                            Text(
+                                "\(snapshot.pendingTaskCount) task\(snapshot.pendingTaskCount == 1 ? "" : "s") waiting"
+                            )
+                            .font(.subheadline)
                         }
                         .padding(.horizontal)
                     )
@@ -96,12 +101,32 @@ struct DashboardOverviewView: View {
     private func metricsGrid(snapshot: DashboardSnapshotDTO) -> some View {
         Grid(alignment: .topLeading, horizontalSpacing: 16, verticalSpacing: 16) {
             GridRow {
-                MetricCard(title: "Active", value: snapshot.activeFormations.count, footer: "Formations in progress", tint: .blue)
-                MetricCard(title: "Completed", value: snapshot.completedFormations.count, footer: "Filed successfully", tint: .green)
+                MetricCard(
+                    title: "Active",
+                    value: snapshot.activeFormations.count,
+                    footer: "Formations in progress",
+                    tint: .blue
+                )
+                MetricCard(
+                    title: "Completed",
+                    value: snapshot.completedFormations.count,
+                    footer: "Filed successfully",
+                    tint: .green
+                )
             }
             GridRow {
-                MetricCard(title: "Mailboxes", value: snapshot.assignedMailboxes.count, footer: "Assigned at Sagebrush", tint: .purple)
-                MetricCard(title: "Workflows", value: snapshot.quickStartNotations.count, footer: "Ready to launch", tint: .orange)
+                MetricCard(
+                    title: "Mailboxes",
+                    value: snapshot.assignedMailboxes.count,
+                    footer: "Assigned at Sagebrush",
+                    tint: .purple
+                )
+                MetricCard(
+                    title: "Workflows",
+                    value: snapshot.quickStartNotations.count,
+                    footer: "Ready to launch",
+                    tint: .orange
+                )
             }
         }
     }
@@ -158,7 +183,8 @@ struct DashboardOverviewView: View {
 
     private func greetingName(for snapshot: DashboardSnapshotDTO) -> String {
         if let givenName = authManager.userGivenName?.trimmingCharacters(in: .whitespacesAndNewlines),
-           !givenName.isEmpty {
+            !givenName.isEmpty
+        {
             return givenName
         }
 
@@ -177,8 +203,9 @@ struct DashboardOverviewView: View {
         }
 
         if let fallbackEmail = authManager.userEmail,
-           let handle = fallbackEmail.split(separator: "@").first,
-           !handle.isEmpty {
+            let handle = fallbackEmail.split(separator: "@").first,
+            !handle.isEmpty
+        {
             return String(handle)
         }
 

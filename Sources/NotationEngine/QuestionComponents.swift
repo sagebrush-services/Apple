@@ -117,7 +117,8 @@ public enum QuestionComponentFactory {
     private static func replacePlaceholders(in text: String, contextLabel: String?) -> String {
         guard let contextLabel else { return text }
         let formatted = contextLabel
-        return text
+        return
+            text
             .replacingOccurrences(of: "{{for_label}}", with: formatted)
             .replacingOccurrences(of: "{{parent_label}}", with: formatted)
             .replacingOccurrences(of: "{{label}}", with: formatted)

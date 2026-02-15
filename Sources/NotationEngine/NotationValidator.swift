@@ -30,14 +30,25 @@ public enum NotationValidator {
                 stack.append(state)
 
                 guard let node = machine.nodes[state] else {
-                    problems.append(.init(code: "missing_node", message: "State \(state.rawValue) referenced in \(context) but not defined"))
+                    problems.append(
+                        .init(
+                            code: "missing_node",
+                            message: "State \(state.rawValue) referenced in \(context) but not defined"
+                        )
+                    )
                     _ = stack.popLast()
                     return
                 }
 
                 // Ensure question definition exists
                 if configuration.questions[node.question.code] == nil {
-                    problems.append(.init(code: "unknown_question", message: "Question code '\(node.question.code)' referenced by state \(state.rawValue) is missing from catalogue"))
+                    problems.append(
+                        .init(
+                            code: "unknown_question",
+                            message:
+                                "Question code '\(node.question.code)' referenced by state \(state.rawValue) is missing from catalogue"
+                        )
+                    )
                 }
 
                 // Validate transitions
@@ -51,10 +62,16 @@ public enum NotationValidator {
 
                     // Validate choice binding when required
                     if case .choice = transition.condition,
-                       let definition = configuration.questions[node.question.code],
-                       definition.choices.isEmpty,
-                       definition.type.requiresChoices {
-                        problems.append(.init(code: "missing_choices", message: "Question '\(definition.code)' requires choices but none were provided"))
+                        let definition = configuration.questions[node.question.code],
+                        definition.choices.isEmpty,
+                        definition.type.requiresChoices
+                    {
+                        problems.append(
+                            .init(
+                                code: "missing_choices",
+                                message: "Question '\(definition.code)' requires choices but none were provided"
+                            )
+                        )
                     }
                 }
 
@@ -74,11 +91,17 @@ public enum NotationValidator {
                     let leadsToEnd = node.transitions.contains { destination in
                         switch destination.destination {
                         case .end: return true
-                        case .state(let next): return next == stateID // placeholder check by recursion not necessary here
+                        // placeholder check by recursion not necessary here
+                        case .state(let next): return next == stateID
                         }
                     }
                     if !leadsToEnd {
-                        problems.append(.init(code: "no_end", message: "State \(stateID.rawValue) in \(context) does not lead to END"))
+                        problems.append(
+                            .init(
+                                code: "no_end",
+                                message: "State \(stateID.rawValue) in \(context) does not lead to END"
+                            )
+                        )
                     }
                 }
             }

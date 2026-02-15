@@ -58,7 +58,9 @@ struct DashboardShellView: View {
                                     .padding(.vertical, 6)
                             }
                             .buttonStyle(.plain)
-                            .listRowBackground(selectedSection == section ? Color.accentColor.opacity(0.15) : Color.clear)
+                            .listRowBackground(
+                                selectedSection == section ? Color.accentColor.opacity(0.15) : Color.clear
+                            )
                         }
                     }
                     .navigationTitle("Sagebrush")
@@ -78,9 +80,9 @@ struct DashboardShellView: View {
                 NavigationStack {
                     detailContent
                         .navigationTitle(selectedSection.label)
-#if os(iOS)
-                        .navigationBarTitleDisplayMode(.inline)
-#endif
+                        #if os(iOS)
+                    .navigationBarTitleDisplayMode(.inline)
+                        #endif
                         .toolbar {
                             ToolbarItem(placement: .principal) {
                                 Menu {
@@ -128,9 +130,9 @@ struct DashboardShellView: View {
     }
 }
 
-private extension DashboardShellView {
+extension DashboardShellView {
     @ViewBuilder
-    func sidebarLabel(for section: DashboardSection) -> some View {
+    fileprivate func sidebarLabel(for section: DashboardSection) -> some View {
         Label {
             Text(section.label)
                 .frame(maxWidth: .infinity, alignment: .leading)

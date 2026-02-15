@@ -388,7 +388,8 @@ public struct DaliConfiguration {
                 existing.name = name.isEmpty ? existing.name : name
                 existing.code = code.isEmpty ? existing.code : code
                 if let jurisdictionTypeString = record["jurisdiction_type"] as? String,
-                   let jurisdictionType = JurisdictionType(rawValue: jurisdictionTypeString) {
+                    let jurisdictionType = JurisdictionType(rawValue: jurisdictionTypeString)
+                {
                     existing.jurisdictionType = jurisdictionType
                 }
                 try await existing.save(on: database)

@@ -66,11 +66,16 @@ struct FormationDashboardView: View {
             .task {
                 await refreshAll()
             }
-            .alert("Error", isPresented: $isPresentingError, actions: {
-                Button("OK", role: .cancel) {}
-            }, message: {
-                Text(store.errorMessage ?? "Unknown error")
-            })
+            .alert(
+                "Error",
+                isPresented: $isPresentingError,
+                actions: {
+                    Button("OK", role: .cancel) {}
+                },
+                message: {
+                    Text(store.errorMessage ?? "Unknown error")
+                }
+            )
         }
     }
 

@@ -20,8 +20,8 @@ public enum FlowRuntimeError: Error, CustomStringConvertible {
     }
 }
 
-public extension FlowInstance {
-    mutating func start() throws -> StateMachine.StateID {
+extension FlowInstance {
+    public mutating func start() throws -> StateMachine.StateID {
         guard !completed else { throw FlowRuntimeError.alreadyCompleted }
 
         switch machine.destinationForStart(kind: kind) {
@@ -35,7 +35,7 @@ public extension FlowInstance {
         }
     }
 
-    mutating func submitAnswer(
+    public mutating func submitAnswer(
         _ value: AnswerValue,
         timestamp: Date = Date()
     ) throws -> StateMachine.StateID? {
@@ -63,7 +63,7 @@ public extension FlowInstance {
         }
     }
 
-    mutating func restart() {
+    public mutating func restart() {
         currentState = nil
         completed = false
         answerLog.removeAll()
@@ -112,8 +112,8 @@ public extension FlowInstance {
     }
 }
 
-private extension StateMachine {
-    func destinationForStart(kind: FlowInstance.FlowKind) -> Destination {
-        return start.destination
+extension StateMachine {
+    fileprivate func destinationForStart(kind: FlowInstance.FlowKind) -> Destination {
+        start.destination
     }
 }

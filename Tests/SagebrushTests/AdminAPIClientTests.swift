@@ -36,7 +36,7 @@ struct AdminAPIClientTests {
         }
 
         func hasValidTokens() async -> Bool {
-            return tokens["accessToken"] != nil
+            tokens["accessToken"] != nil
         }
     }
 
@@ -81,14 +81,14 @@ struct AdminAPIClientTests {
     @Test("PersonResponse decodes correctly from JSON")
     func testPersonResponseDecoding() throws {
         let json = """
-        {
-            "id": 42,
-            "name": "John Doe",
-            "email": "john@example.com",
-            "inserted_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-02T00:00:00Z"
-        }
-        """
+            {
+                "id": 42,
+                "name": "John Doe",
+                "email": "john@example.com",
+                "inserted_at": "2024-01-01T00:00:00Z",
+                "updated_at": "2024-01-02T00:00:00Z"
+            }
+            """
 
         let data = json.data(using: .utf8)!
         let decoder = JSONDecoder()
@@ -107,17 +107,17 @@ struct AdminAPIClientTests {
     @Test("QuestionResponse decodes correctly from JSON")
     func testQuestionResponseDecoding() throws {
         let json = """
-        {
-            "id": 123,
-            "prompt": "What is your name?",
-            "question_type": "string",
-            "code": "user_name",
-            "help_text": "Enter your full legal name",
-            "choices": null,
-            "inserted_at": "2024-01-01T00:00:00Z",
-            "updated_at": null
-        }
-        """
+            {
+                "id": 123,
+                "prompt": "What is your name?",
+                "question_type": "string",
+                "code": "user_name",
+                "help_text": "Enter your full legal name",
+                "choices": null,
+                "inserted_at": "2024-01-01T00:00:00Z",
+                "updated_at": null
+            }
+            """
 
         let data = json.data(using: .utf8)!
         let decoder = JSONDecoder()
@@ -139,21 +139,21 @@ struct AdminAPIClientTests {
     @Test("QuestionResponse with choices decodes correctly")
     func testQuestionResponseWithChoicesDecoding() throws {
         let json = """
-        {
-            "id": 456,
-            "prompt": "Select your state",
-            "question_type": "select",
-            "code": "state_selection",
-            "help_text": null,
-            "choices": {
-                "CA": "California",
-                "NY": "New York",
-                "TX": "Texas"
-            },
-            "inserted_at": "2024-01-01T00:00:00Z",
-            "updated_at": "2024-01-02T00:00:00Z"
-        }
-        """
+            {
+                "id": 456,
+                "prompt": "Select your state",
+                "question_type": "select",
+                "code": "state_selection",
+                "help_text": null,
+                "choices": {
+                    "CA": "California",
+                    "NY": "New York",
+                    "TX": "Texas"
+                },
+                "inserted_at": "2024-01-01T00:00:00Z",
+                "updated_at": "2024-01-02T00:00:00Z"
+            }
+            """
 
         let data = json.data(using: .utf8)!
         let decoder = JSONDecoder()

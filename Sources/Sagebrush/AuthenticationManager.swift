@@ -1,7 +1,7 @@
-import Foundation
 import AuthenticationServices
-import SwiftUI
 import Dali
+import Foundation
+import SwiftUI
 
 @MainActor
 class AuthenticationManager: NSObject, ObservableObject {
@@ -77,7 +77,8 @@ class AuthenticationManager: NSObject, ObservableObject {
                 Task { @MainActor in
                     if let error = error {
                         if let authError = error as? ASWebAuthenticationSessionError,
-                           authError.code == .canceledLogin {
+                            authError.code == .canceledLogin
+                        {
                             continuation.resume(throwing: AuthError.userCancelled)
                         } else {
                             continuation.resume(throwing: AuthError.authenticationFailed(error))
@@ -156,8 +157,9 @@ class AuthenticationManager: NSObject, ObservableObject {
     private func handleCallback(_ url: URL) async throws {
         // Extract authorization code from callback URL
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let codeItem = components.queryItems?.first(where: { $0.name == "code" }),
-              let code = codeItem.value else {
+            let codeItem = components.queryItems?.first(where: { $0.name == "code" }),
+            let code = codeItem.value
+        else {
             throw AuthError.invalidCallback
         }
 
@@ -189,7 +191,8 @@ class AuthenticationManager: NSObject, ObservableObject {
         let (data, response) = try await URLSession.shared.data(for: request)
 
         guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
+            httpResponse.statusCode == 200
+        else {
             throw AuthError.tokenExchangeFailed
         }
 
@@ -231,7 +234,8 @@ class AuthenticationManager: NSObject, ObservableObject {
         let (data, response) = try await URLSession.shared.data(for: request)
 
         guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
+            httpResponse.statusCode == 200
+        else {
             // Refresh failed, need to re-authenticate
             try await keychain.deleteAll()
             isAuthenticated = false
@@ -270,14 +274,17 @@ class AuthenticationManager: NSObject, ObservableObject {
         userEmail = claims["email"] as? String
 
         if let givenName = (claims["given_name"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
-           !givenName.isEmpty {
+            !givenName.isEmpty
+        {
             userGivenName = givenName
         } else if let fullName = (claims["name"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  !fullName.isEmpty {
+            !fullName.isEmpty
+        {
             userGivenName = fullName.components(separatedBy: .whitespaces).first
         } else if let email = userEmail,
-                  let handle = email.split(separator: "@").first,
-                  !handle.isEmpty {
+            let handle = email.split(separator: "@").first,
+            !handle.isEmpty
+        {
             userGivenName = String(handle)
         } else {
             userGivenName = nil
@@ -307,7 +314,8 @@ class AuthenticationManager: NSObject, ObservableObject {
         }
 
         guard let data = Data(base64Encoded: base64),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+        else {
             throw AuthError.invalidToken
         }
 
@@ -405,8 +413,8 @@ extension AuthenticationManager: ASWebAuthenticationPresentationContextProviding
 
 // MARK: - Private helpers
 
-private extension AuthenticationManager {
-    func buildAuthorizationURL(pkce: PKCEGenerator) throws -> URL {
+extension AuthenticationManager {
+    fileprivate func buildAuthorizationURL(pkce: PKCEGenerator) throws -> URL {
         let params: [String: String] = [
             "client_id": config.clientId,
             "response_type": "code",
@@ -416,7 +424,8 @@ private extension AuthenticationManager {
             "code_challenge_method": "S256",
         ]
 
-        let query = params
+        let query =
+            params
             .map { key, value in "\(key)=\(percentEncode(value))" }
             .sorted()
             .joined(separator: "&")
@@ -428,14 +437,15 @@ private extension AuthenticationManager {
         return url
     }
 
-    func formURLEncodedBody(_ params: [String: String]) -> Data? {
-        let encoded = params
+    fileprivate func formURLEncodedBody(_ params: [String: String]) -> Data? {
+        let encoded =
+            params
             .map { key, value in "\(key)=\(percentEncode(value))" }
             .joined(separator: "&")
         return encoded.data(using: .utf8)
     }
 
-    func percentEncode(_ value: String) -> String {
+    fileprivate func percentEncode(_ value: String) -> String {
         // For redirect URIs, we should not encode the scheme and path separators
         // OAuth spec requires these to match exactly as registered
         if value.hasPrefix("sagebrush://") {

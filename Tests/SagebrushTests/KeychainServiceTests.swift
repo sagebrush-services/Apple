@@ -88,7 +88,7 @@ struct KeychainServiceTests {
     @Test("Can save and load Date as token expiration")
     func testSaveAndLoadDate() async throws {
         let keychain = KeychainService.shared
-        let testDate = Date(timeIntervalSince1970: 1700000000) // Nov 14, 2023
+        let testDate = Date(timeIntervalSince1970: 1_700_000_000)  // Nov 14, 2023
 
         try await keychain.saveDate(testDate, for: .tokenExpiration)
         let loaded = try await keychain.loadDate(.tokenExpiration)
@@ -100,7 +100,7 @@ struct KeychainServiceTests {
     @Test("Can save and load future date")
     func testSaveAndLoadFutureDate() async throws {
         let keychain = KeychainService.shared
-        let futureDate = Date().addingTimeInterval(3600) // 1 hour from now
+        let futureDate = Date().addingTimeInterval(3600)  // 1 hour from now
 
         try await keychain.saveDate(futureDate, for: .tokenExpiration)
         let loaded = try await keychain.loadDate(.tokenExpiration)
@@ -111,7 +111,7 @@ struct KeychainServiceTests {
     @Test("Can save and load past date")
     func testSaveAndLoadPastDate() async throws {
         let keychain = KeychainService.shared
-        let pastDate = Date().addingTimeInterval(-3600) // 1 hour ago
+        let pastDate = Date().addingTimeInterval(-3600)  // 1 hour ago
 
         try await keychain.saveDate(pastDate, for: .tokenExpiration)
         let loaded = try await keychain.loadDate(.tokenExpiration)
@@ -228,7 +228,7 @@ struct KeychainServiceTests {
     @Test("hasValidTokens returns true for future expiration (>5 minutes)")
     func testHasValidTokensWithFutureExpiration() async throws {
         let keychain = KeychainService.shared
-        let futureDate = Date().addingTimeInterval(600) // 10 minutes from now
+        let futureDate = Date().addingTimeInterval(600)  // 10 minutes from now
 
         try await keychain.saveDate(futureDate, for: .tokenExpiration)
 
@@ -239,7 +239,7 @@ struct KeychainServiceTests {
     @Test("hasValidTokens returns false for expired tokens")
     func testHasValidTokensWithPastExpiration() async throws {
         let keychain = KeychainService.shared
-        let pastDate = Date().addingTimeInterval(-600) // 10 minutes ago
+        let pastDate = Date().addingTimeInterval(-600)  // 10 minutes ago
 
         try await keychain.saveDate(pastDate, for: .tokenExpiration)
 
@@ -250,7 +250,7 @@ struct KeychainServiceTests {
     @Test("hasValidTokens returns false for tokens expiring within 5 minutes")
     func testHasValidTokensWithNearExpiration() async throws {
         let keychain = KeychainService.shared
-        let nearExpirationDate = Date().addingTimeInterval(200) // 3.33 minutes from now
+        let nearExpirationDate = Date().addingTimeInterval(200)  // 3.33 minutes from now
 
         try await keychain.saveDate(nearExpirationDate, for: .tokenExpiration)
 
@@ -261,7 +261,7 @@ struct KeychainServiceTests {
     @Test("hasValidTokens boundary case: exactly 5 minutes")
     func testHasValidTokensBoundaryCase() async throws {
         let keychain = KeychainService.shared
-        let boundaryDate = Date().addingTimeInterval(300) // Exactly 5 minutes
+        let boundaryDate = Date().addingTimeInterval(300)  // Exactly 5 minutes
 
         try await keychain.saveDate(boundaryDate, for: .tokenExpiration)
 
@@ -273,7 +273,7 @@ struct KeychainServiceTests {
     @Test("hasValidTokens boundary case: 5 minutes + 1 second")
     func testHasValidTokensJustValid() async throws {
         let keychain = KeychainService.shared
-        let justValidDate = Date().addingTimeInterval(301) // 5 minutes + 1 second
+        let justValidDate = Date().addingTimeInterval(301)  // 5 minutes + 1 second
 
         try await keychain.saveDate(justValidDate, for: .tokenExpiration)
 
@@ -308,7 +308,7 @@ struct KeychainServiceTests {
     func testSaveAndLoadLongToken() async throws {
         let keychain = KeychainService.shared
         // Cognito tokens can be quite long
-        let longToken = String(repeating: "abcdefghij", count: 100) // 1000 characters
+        let longToken = String(repeating: "abcdefghij", count: 100)  // 1000 characters
 
         try await keychain.save(longToken, for: .accessToken)
         let loaded = try await keychain.load(.accessToken)

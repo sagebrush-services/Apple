@@ -78,7 +78,7 @@ extension AppConfiguration {
     /// AppConfiguration.shared.useLocalNetworkIP("192.168.1.100")
     /// ```
     func useLocalNetworkIP(_ ip: String, port: Int = 8080) -> Bool {
-        return setCustomBaseURL("http://\(ip):\(port)")
+        setCustomBaseURL("http://\(ip):\(port)")
     }
 
     /// Get current configuration summary (useful for debugging)

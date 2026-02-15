@@ -294,7 +294,7 @@ public actor PDFGenerationService {
                 continue
             }
 
-            var pageBox = page.bounds(for: .mediaBox)
+            let pageBox = page.bounds(for: .mediaBox)
             let pageDictionary: CFDictionary = [kCGPDFContextMediaBox as String: pageBox] as CFDictionary
             context.beginPDFPage(pageDictionary)
             context.drawPDFPage(pageRef)

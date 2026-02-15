@@ -12,9 +12,9 @@ final class FormationStore: ObservableObject {
 
     private var parsedNotations: [String: ParsedNotation] = [:]
     private let apiClient = APIClient.shared
-#if os(iOS) && canImport(ActivityKit)
+    #if os(iOS) && canImport(ActivityKit)
     private let activityManager = FormationActivityManager.shared
-#endif
+    #endif
 
     private struct ParsedNotation {
         let notation: Notation
@@ -59,11 +59,14 @@ final class FormationStore: ObservableObject {
 
             for instance in list {
                 try await ensureNotationLoaded(code: instance.notationCode)
-#if os(iOS) && canImport(ActivityKit)
-        if #available(iOS 16.1, *) {
-            activityManager.updateActivity(for: instance, notation: parsedNotations[instance.notationCode]?.notation)
-        }
-#endif
+                #if os(iOS) && canImport(ActivityKit)
+                if #available(iOS 16.1, *) {
+                    activityManager.updateActivity(
+                        for: instance,
+                        notation: parsedNotations[instance.notationCode]?.notation
+                    )
+                }
+                #endif
             }
         } catch {
             errorMessage = error.localizedDescription
@@ -79,11 +82,11 @@ final class FormationStore: ObservableObject {
         )
 
         instances.insert(response, at: 0)
-#if os(iOS) && canImport(ActivityKit)
+        #if os(iOS) && canImport(ActivityKit)
         if #available(iOS 16.1, *) {
             activityManager.startActivity(for: response, notation: parsedNotations[notation.code]?.notation)
         }
-#endif
+        #endif
         return response
     }
 
@@ -91,11 +94,11 @@ final class FormationStore: ObservableObject {
         let response = try await apiClient.fetchFormationInstance(id: id)
         try await ensureNotationLoaded(code: response.notationCode)
         updateInstanceInStore(response)
-#if os(iOS) && canImport(ActivityKit)
+        #if os(iOS) && canImport(ActivityKit)
         if #available(iOS 16.1, *) {
             activityManager.updateActivity(for: response, notation: parsedNotations[response.notationCode]?.notation)
         }
-#endif
+        #endif
         return response
     }
 
@@ -115,17 +118,17 @@ final class FormationStore: ObservableObject {
         )
 
         updateInstanceInStore(updated)
-#if os(iOS) && canImport(ActivityKit)
+        #if os(iOS) && canImport(ActivityKit)
         if #available(iOS 16.1, *) {
             activityManager.updateActivity(for: updated, notation: parsedNotations[updated.notationCode]?.notation)
         }
-#endif
+        #endif
         return updated
     }
 
     func descriptor(for instance: FlowInstanceResponseDTO) -> QuestionStepDescriptor? {
         guard let stateID = instance.currentState,
-              let parsed = parsedNotations[instance.notationCode]
+            let parsed = parsedNotations[instance.notationCode]
         else {
             return nil
         }
@@ -133,14 +136,16 @@ final class FormationStore: ObservableObject {
         let stateIdentifier = StateMachine.StateID(rawValue: stateID)
         let machine: StateMachine
 
-        if instance.kind == .alignment, let alignment = parsed.notation.alignment, alignment.nodes[stateIdentifier] != nil {
+        if instance.kind == .alignment, let alignment = parsed.notation.alignment,
+            alignment.nodes[stateIdentifier] != nil
+        {
             machine = alignment
         } else {
             machine = parsed.notation.flow
         }
 
         guard let node = machine.nodes[stateIdentifier],
-              let definition = parsed.questions[node.question.code]
+            let definition = parsed.questions[node.question.code]
         else {
             return nil
         }
@@ -163,8 +168,8 @@ final class FormationStore: ObservableObject {
     }
 }
 
-private extension Notation {
-    var allQuestionCodes: Set<String> {
+extension Notation {
+    fileprivate var allQuestionCodes: Set<String> {
         var codes = Set(flow.nodes.values.map { $0.question.code })
         if let alignment {
             codes.formUnion(alignment.nodes.values.map { $0.question.code })

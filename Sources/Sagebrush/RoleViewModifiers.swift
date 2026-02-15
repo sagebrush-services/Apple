@@ -1,5 +1,5 @@
-import SwiftUI
 import Dali
+import SwiftUI
 
 /// View modifier that only shows content if user has admin role
 struct AdminOnlyModifier: ViewModifier {

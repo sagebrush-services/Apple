@@ -53,12 +53,16 @@ private struct RawNotation: Decodable {
         if document_url != nil || document_type != nil || document_mappings != nil {
             let typeString = document_type ?? "pdf"
             guard let docType = DocumentType(rawValue: typeString) else {
-                throw NotationError.invalidValue(field: "document_type", reason: "Unsupported value '" + typeString + "'")
+                throw NotationError.invalidValue(
+                    field: "document_type",
+                    reason: "Unsupported value '" + typeString + "'"
+                )
             }
             let url = document_url.flatMap(URL.init(string:))
-            let mappings = document_mappings?.reduce(into: [String: DocumentMapping]()) { result, pair in
-                result[pair.key] = pair.value.toModel(field: pair.key)
-            } ?? [:]
+            let mappings =
+                document_mappings?.reduce(into: [String: DocumentMapping]()) { result, pair in
+                    result[pair.key] = pair.value.toModel(field: pair.key)
+                } ?? [:]
             document = Notation.Document(url: url, type: docType, mappings: mappings)
         } else {
             document = nil
@@ -86,13 +90,14 @@ private struct RawDocumentMapping: Decodable {
     func toModel(field: String) -> DocumentMapping {
         let quad: DocumentMapping.Quad?
         if let upperLeft = upper_left,
-           let lowerLeft = lower_left,
-           let upperRight = upper_right,
-           let lowerRight = lower_right,
-           upperLeft.count == 2,
-           lowerLeft.count == 2,
-           upperRight.count == 2,
-           lowerRight.count == 2 {
+            let lowerLeft = lower_left,
+            let upperRight = upper_right,
+            let lowerRight = lower_right,
+            upperLeft.count == 2,
+            lowerLeft.count == 2,
+            upperRight.count == 2,
+            lowerRight.count == 2
+        {
             quad = DocumentMapping.Quad(
                 upperLeft: .init(x: upperLeft[0], y: upperLeft[1]),
                 lowerLeft: .init(x: lowerLeft[0], y: lowerLeft[1]),

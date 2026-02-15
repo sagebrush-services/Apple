@@ -21,9 +21,9 @@ struct MailroomOverviewView: View {
                         }
                     }
                 }
-#if os(iOS)
+                #if os(iOS)
                 .listStyle(.insetGrouped)
-#endif
+                #endif
             } else if viewModel.isLoading {
                 ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {

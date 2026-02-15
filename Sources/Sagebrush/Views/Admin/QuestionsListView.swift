@@ -1,5 +1,5 @@
-import SwiftUI
 import Dali
+import SwiftUI
 
 struct QuestionsListView: View {
     @EnvironmentObject var authManager: AuthenticationManager
@@ -9,10 +9,12 @@ struct QuestionsListView: View {
     @State private var errorMessage: String?
 
     init() {
-        _apiClient = StateObject(wrappedValue: AdminAPIClient(
-            baseURL: URL(string: Config.environment.apiBaseURL)!,
-            authManager: AuthenticationManager.shared
-        ))
+        _apiClient = StateObject(
+            wrappedValue: AdminAPIClient(
+                baseURL: URL(string: Config.environment.apiBaseURL)!,
+                authManager: AuthenticationManager.shared
+            )
+        )
     }
 
     var body: some View {
@@ -79,7 +81,7 @@ struct QuestionsListView: View {
             }
         }
         .navigationTitle("Questions")
-#if os(iOS)
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -89,7 +91,7 @@ struct QuestionsListView: View {
                 }
             }
         }
-#endif
+        #endif
         .refreshable {
             await loadQuestions()
         }
