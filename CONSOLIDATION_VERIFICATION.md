@@ -9,7 +9,10 @@
 
 ✅ **Consolidation Status: COMPLETE**
 
-The iOS code migration from `~/Luxe/NomadApp` to `~/Trifecta/Sagebrush/Apple` is fully complete with 100% code parity. All Swift files, assets, and configuration files are identical between the two locations. Sagebrush/Apple is the active development location with a modern SPM-first architecture and comprehensive CI/CD pipeline.
+The iOS code migration from `~/Luxe/NomadApp` to `~/Trifecta/Sagebrush/Apple` is fully
+complete with 100% code parity. All Swift files, assets, and configuration files are
+identical between the two locations. Sagebrush/Apple is the active development location with
+a modern SPM-first architecture and comprehensive CI/CD pipeline.
 
 ---
 
@@ -63,11 +66,13 @@ All asset files are byte-for-byte identical between locations.
 While the code is identical, the build systems differ:
 
 ### NomadApp (Legacy)
+
 - **Build System:** Xcode project (`.xcodeproj`)
 - **Structure:** Traditional iOS app structure
 - **CI/CD:** None configured
 
 ### Sagebrush/Apple (Active)
+
 - **Build System:** Swift Package Manager (SPM-only)
 - **Structure:** Modern SPM package layout
 - **CI/CD:** ✅ Full GitHub Actions pipeline
@@ -127,6 +132,7 @@ All CI checks were run locally and **ALL PASSED** after fixes:
 ### 1. Swift Format Lint ✅
 
 **Command:**
+
 ```bash
 swift format lint --strict --recursive --parallel --no-color-diagnostics .
 ```
@@ -150,6 +156,7 @@ swift format lint --strict --recursive --parallel --no-color-diagnostics .
 ### 2. Swift Build (Strict) ✅
 
 **Command:**
+
 ```bash
 swift build --jobs 1 -Xswiftc -warnings-as-errors
 ```
@@ -169,6 +176,7 @@ swift build --jobs 1 -Xswiftc -warnings-as-errors
 ### 3. Test Suite ✅
 
 **Command:**
+
 ```bash
 swift test
 ```
@@ -209,7 +217,8 @@ To ensure CI/CD compliance, the following files were modified:
 ## Active Development Location
 
 **✅ Official Active Development Location:**
-```
+
+```txt
 ~/Trifecta/Sagebrush/Apple
 ```
 
@@ -237,12 +246,14 @@ All CI checks now pass locally:
 ### Next Steps for CI
 
 1. **Commit formatting fixes:**
+
    ```bash
    git add .
    git commit -m "fix: resolve Swift Format violations and build warnings"
    ```
 
 2. **Push to remote:**
+
    ```bash
    git push
    ```
@@ -277,7 +288,9 @@ All CI checks now pass locally:
 
 ## Conclusion
 
-The iOS code consolidation from NomadApp to Sagebrush/Apple is **100% complete** with full code parity verified. The Sagebrush/Apple repository is now the official active development location with:
+The iOS code consolidation from NomadApp to Sagebrush/Apple is **100% complete** with full
+code parity verified. The Sagebrush/Apple repository is now the official active development
+location with:
 
 - ✅ Modern SPM-first architecture
 - ✅ Comprehensive CI/CD pipeline with strict quality gates

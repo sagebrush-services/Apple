@@ -39,46 +39,47 @@ directory.
 - **Prospector** Grant research tool that uses OpenAI Deep Research to find non-repayable grants for Nevada companies
 - **Roulette** Random file generator to choose for refactoring.
 - **TBD Sagebrush** Apple app for Sagebrush Services customers.
-- **TestUtiltiies** Test helpers for Swift Server targets.
+- **TestUtilities** Test helpers for Swift Server targets.
 - **TouchMenu** Common UI components shared across web targets
 - **Vegas** AWS infrastructure-as-code
 
 ## Vegas Infrastructure
 
-Vegas manages AWS infrastructure deployment for both production and development environments. The table below shows which services are deployed to each environment.
+Vegas manages AWS infrastructure deployment for both production and development environments.
+The table below shows which services are deployed to each environment.
 
 ### Current Service Deployment
 
 | Service Category | Stack Name | Production | Development | Notes |
-|-----------------|------------|------------|-------------|-------|
-| **Network Infrastructure** |
+| ---------------- | ---------- | ---------- | ----------- | ----- |
+| **Network Infrastructure** | | | | |
 | VPC (Oregon) | oregon-vpc | ✅ | ❌ | Production only |
 | VPC (Ohio) | ohio-vpc | ✅ | ❌ | For GitHub Actions runners |
-| **Storage** |
+| **Storage** | | | | |
 | Public S3 Bucket | sagebrush-public-bucket | ✅ | ✅ | File upload testing |
 | Private S3 Bucket | sagebrush-private-bucket | ✅ | ❌ | VPC-only access (dev uses MinIO) |
 | S3 Bucket Policy | sagebrush-s3-bucket-policy | ✅ | ❌ | CloudFront access control |
-| **CloudFront/CDN** |
+| **CloudFront/CDN** | | | | |
 | Legacy CloudFront | sagebrush-brochure-cloudfront | ✅ | ❌ | Production only |
 | CloudFront Certificates (us-east-1) | neonlaw/hoshihoshi/tarotswift/etc | ✅ | ❌ | 6 certificates total |
 | CloudFront Distributions | neonlaw/hoshihoshi/tarotswift/etc | ✅ | ❌ | 6 distributions total |
-| **Database** |
+| **Database** | | | | |
 | RDS PostgreSQL | oregon-rds | ✅ | ❌ | Production only (dev uses local DB) |
 | Secrets Manager | oregon-secrets | ✅ | ❌ | Stores RDS credentials |
-| **Authentication** |
+| **Authentication** | | | | |
 | Cognito User Pool | sagebrush-cognito-prod | ✅ | ❌ | Production only |
 | Cognito User Pool | sagebrush-cognito-dev | ❌ | ✅ | Development only |
 | Admin Users | (created via setup-admin-users) | ✅ | ✅ | |
-| **Application Load Balancer** |
-| SSL Certificate | bazaar-certificate | ✅ | ❌ | For www.sagebrush.services |
+| **Application Load Balancer** | | | | |
+| SSL Certificate | bazaar-certificate | ✅ | ❌ | For <www.sagebrush.services> |
 | ALB with Auth | sagebrush-alb | ✅ | ❌ | Production only |
 | ALB Listener Rules | bazaar-alb-listener-rules | ✅ | ❌ | Production only |
-| **Application Services** |
+| **Application Services** | | | | |
 | Bazaar ECS Service | bazaar-service | ✅ | ❌ | Production only (dev runs locally) |
-| **IAM/System Accounts** |
+| **IAM/System Accounts** | | | | |
 | Engineering Account | engineering-system-account | ✅ | ❌ | Production only |
 | GitHub CI/CD Account | sagebrush-github-system-account | ✅ | ❌ | Production only |
-| **Disabled (Commented Out)** |
+| **Disabled (Commented Out)** | | | | |
 | Bastion Host | oregon-bastion | ❌ | ❌ | Updated via separate command |
 | Email Processing | sagebrush-email-* | ❌ | ❌ | Cost optimization |
 

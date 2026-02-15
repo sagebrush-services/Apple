@@ -1,10 +1,13 @@
 # Sagebrush iOS App Testing
 
-This directory contains unit tests for the Sagebrush iOS application. These tests verify the core functionality of the iOS client, including API communication, authentication, and keychain operations.
+This directory contains unit tests for the Sagebrush iOS application. These tests verify the
+core functionality of the iOS client, including API communication, authentication, and keychain
+operations.
 
 ## Test Coverage
 
 ### 1. AdminAPIClient Tests (10 tests)
+
 **File**: `AdminAPIClientTests.swift`
 
 Tests the HTTP client that communicates with the Bazaar backend:
@@ -16,6 +19,7 @@ Tests the HTTP client that communicates with the Bazaar backend:
 - ✅ Special characters and unicode handling
 
 ### 2. AuthenticationManager Tests (20 tests)
+
 **File**: `AuthenticationManagerTests.swift`
 
 Tests the RBAC (Role-Based Access Control) logic:
@@ -29,6 +33,7 @@ Tests the RBAC (Role-Based Access Control) logic:
 - ✅ Thread safety with @MainActor
 
 ### 3. KeychainService Tests (29 tests)
+
 **File**: `KeychainServiceTests.swift`
 
 Tests secure token storage and retrieval:
@@ -45,6 +50,7 @@ Tests secure token storage and retrieval:
 ## Running the Tests
 
 ### Option 1: Xcode (Recommended)
+
 Since these are iOS-specific tests, they should be run in Xcode with the iOS simulator:
 
 ```bash
@@ -57,6 +63,7 @@ Then in Xcode:
 2. Or click the diamond icon next to any test function
 
 ### Option 2: xcodebuild (Command Line)
+
 ```bash
 cd /Users/fbettag/src/Luxe/SagebrushApp
 xcodebuild test \
@@ -67,7 +74,10 @@ xcodebuild test \
 ```
 
 ### Why Not `swift test`?
-The `swift test` command runs on macOS, but the Sagebrush app uses iOS-only SwiftUI modifiers (`.insetGrouped`, `.navigationBarTrailing`, `.page`) that aren't available on macOS. Therefore, SPM tests won't work for iOS-specific code.
+
+The `swift test` command runs on macOS, but the Sagebrush app uses iOS-only SwiftUI modifiers
+(`.insetGrouped`, `.navigationBarTrailing`, `.page`) that aren't available on macOS. Therefore,
+SPM tests won't work for iOS-specific code.
 
 ## Integration with Backend
 
@@ -112,6 +122,7 @@ For continuous integration, these tests should be run as part of the iOS app bui
 ## Future Testing
 
 ### Integration Tests (Planned)
+
 Create tests that:
 1. Start a real Bazaar test server
 2. Use AdminAPIClient to make actual HTTP requests
@@ -119,6 +130,7 @@ Create tests that:
 4. Test real JWT token parsing and validation
 
 ### UI Tests (Planned)
+
 Use XCUITest to verify:
 1. Admin dashboard navigation
 2. People and Questions list views
@@ -136,18 +148,21 @@ All tests use:
 ## Troubleshooting
 
 ### Tests Fail Due to Keychain Access
+
 If keychain tests fail, ensure:
 - Keychain access is enabled in test host
 - Running on simulator (not real device during development)
 - No leftover data from previous test runs
 
 ### Authentication Tests Fail
+
 Verify:
 - Test groups match expected format (["admins"], ["staff"], [])
 - Case handling is consistent
 - @MainActor isolation is respected
 
 ### API Tests Fail
+
 Check:
 - JSON encoding/decoding matches backend DTOs
 - Date formatting uses ISO8601
