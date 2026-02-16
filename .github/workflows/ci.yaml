@@ -4,8 +4,6 @@ name: Continuous Integration
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -13,15 +11,20 @@ concurrency:
 
 jobs:
   tests:
-    runs-on:
-      - macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 60
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
       - uses: "actions/checkout@v4"
+
+      - name: Install Swift toolchain
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.2"
 
       - name: Run Swift Format Lint
         run: swift format lint --strict --recursive --parallel --no-color-diagnostics .
@@ -37,13 +40,7 @@ jobs:
             spm-${{ runner.os }}-
 
       - name: Run Swift Build (Strict - Fail on Warnings)
-        run: swift build --jobs 1 -Xswiftc -warnings-as-errors
+        run: swift build -Xswiftc -warnings-as-errors
 
       - name: Run tests
         run: swift test
-
-      - name: Enable automerge
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh pr merge --auto --squash ${{ github.event.pull_request.number }}
