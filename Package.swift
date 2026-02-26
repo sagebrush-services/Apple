@@ -44,7 +44,10 @@ let package = Package(
             path: "Sources/Sagebrush",
             exclude: [
                 "Info.plist",
-                "Assets.xcassets",
+            ]
+            ,
+            resources: [
+                .process("Assets.xcassets")
             ]
         ),
         .target(

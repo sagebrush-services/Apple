@@ -4,11 +4,12 @@ import SwiftUI
 struct QuestionsListView: View {
     @EnvironmentObject var authManager: AuthenticationManager
     @StateObject private var apiClient: AdminAPIClient
-    @State private var questions: [Question] = []
+    @State private var questions: [Question]
     @State private var isLoading = false
     @State private var errorMessage: String?
 
-    init() {
+    init(preloaded: [Question] = []) {
+        _questions = State(initialValue: preloaded)
         _apiClient = StateObject(
             wrappedValue: AdminAPIClient(
                 baseURL: URL(string: Config.environment.apiBaseURL)!,
@@ -96,7 +97,7 @@ struct QuestionsListView: View {
             await loadQuestions()
         }
         .task {
-            await loadQuestions()
+            if questions.isEmpty { await loadQuestions() }
         }
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK") { errorMessage = nil }
@@ -110,7 +111,11 @@ struct QuestionsListView: View {
         errorMessage = nil
 
         do {
-            questions = try await apiClient.fetchQuestions()
+            if AppRuntimeMode.isStandaloneDemoEnabled {
+                questions = await DemoBackend.shared.fetchQuestions()
+            } else {
+                questions = try await apiClient.fetchQuestions()
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -125,7 +130,11 @@ struct QuestionsListView: View {
                 guard let id = question.id else { continue }
 
                 do {
-                    try await apiClient.deleteQuestion(id: id)
+                    if AppRuntimeMode.isStandaloneDemoEnabled {
+                        try await DemoBackend.shared.deleteQuestion(id: id)
+                    } else {
+                        try await apiClient.deleteQuestion(id: id)
+                    }
                     questions.remove(at: index)
                 } catch {
                     errorMessage = error.localizedDescription

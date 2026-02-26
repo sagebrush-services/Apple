@@ -27,3 +27,10 @@ build/
 db.sqlite
 *.db
 tmp/
+
+# Working backups and preserved snapshots (scratch)
+.backup/
+.preserve/
+
+# Generated screenshot artifacts
+artifacts/

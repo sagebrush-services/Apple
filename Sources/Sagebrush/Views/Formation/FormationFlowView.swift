@@ -16,6 +16,7 @@ struct FormationFlowView: View {
     @State private var customAgentName: String = ""
     @State private var isSubmitting = false
     @State private var errorMessage: String?
+    @State private var showCheckout = false
 
     var body: some View {
         Group {
@@ -37,6 +38,13 @@ struct FormationFlowView: View {
         } message: {
             Text(errorMessage ?? "Unknown error")
         }
+        .sheet(isPresented: $showCheckout) {
+            SubscriptionView(
+                subscriptionType: "formation",
+                mailboxID: nil,
+                flowInstanceID: instanceID
+            )
+        }
         .task(id: instanceID) {
             await loadInstance()
         }
@@ -47,8 +55,11 @@ struct FormationFlowView: View {
         VStack(spacing: 20) {
             progressHeader(for: instance)
 
-            if instance.isCompleted {
+            if instance.isFlowComplete {
                 completionView
+                    .onAppear {
+                        showCheckout = true
+                    }
             } else if let descriptor {
                 questionCard(descriptor: descriptor)
             } else {
@@ -68,7 +79,7 @@ struct FormationFlowView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                 Spacer()
-                let percent = instance.progressPercent ?? (instance.isCompleted ? 1.0 : 0.0)
+                let percent = instance.progressPercent ?? (instance.isFlowComplete ? 1.0 : 0.0)
                 Text("\(Int(percent * 100))%")
                     .font(.caption)
                     .fontWeight(.semibold)
@@ -79,7 +90,7 @@ struct FormationFlowView: View {
                     .cornerRadius(8)
             }
 
-            let percent = instance.progressPercent ?? (instance.isCompleted ? 1.0 : 0.0)
+            let percent = instance.progressPercent ?? (instance.isFlowComplete ? 1.0 : 0.0)
             ProgressView(value: percent, total: 1.0)
                 .progressViewStyle(.linear)
 
@@ -87,9 +98,11 @@ struct FormationFlowView: View {
                 Text("Current Stage:")
                     .font(.subheadline)
                     .fontWeight(.medium)
-                Text(formatStageLabel(instance.progressStage ?? (instance.isCompleted ? "completed" : "in-progress")))
-                    .font(.subheadline)
-                    .foregroundColor(.accentColor)
+                Text(
+                    formatStageLabel(instance.progressStage ?? (instance.isFlowComplete ? "completed" : "in-progress"))
+                )
+                .font(.subheadline)
+                .foregroundColor(.accentColor)
             }
         }
     }

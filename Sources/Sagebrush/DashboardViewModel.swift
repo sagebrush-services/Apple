@@ -17,7 +17,11 @@ final class DashboardViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         do {
-            snapshot = try await apiClient.fetchDashboardSnapshot()
+            if AppRuntimeMode.isStandaloneDemoEnabled {
+                snapshot = await DemoBackend.shared.fetchDashboardSnapshot()
+            } else {
+                snapshot = try await apiClient.fetchDashboardSnapshot()
+            }
         } catch {
             errorMessage = error.localizedDescription
         }

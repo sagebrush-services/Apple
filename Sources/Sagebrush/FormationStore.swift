@@ -30,7 +30,12 @@ final class FormationStore: ObservableObject {
         defer { isLoading = false }
 
         do {
-            let summaries = try await apiClient.fetchNotationSummaries()
+            let summaries: [NotationSummaryDTO]
+            if AppRuntimeMode.isStandaloneDemoEnabled {
+                summaries = await DemoBackend.shared.fetchNotationSummaries()
+            } else {
+                summaries = try await apiClient.fetchNotationSummaries()
+            }
             notations = summaries.sorted { $0.title < $1.title }
         } catch {
             errorMessage = error.localizedDescription
@@ -40,21 +45,36 @@ final class FormationStore: ObservableObject {
     func ensureNotationLoaded(code: String) async throws {
         if parsedNotations[code] != nil { return }
 
-        let yaml = try await apiClient.fetchNotationYAML(code: code)
-        let notation = try NotationParser.parse(yaml: yaml)
+        let yaml: String
+        let definitionsDTO: [QuestionDefinitionDTO]
 
-        let codes = Array(notation.allQuestionCodes)
-        let definitionsDTO = try await apiClient.fetchQuestionDefinitions(codes: codes)
-        let definitions = Dictionary(uniqueKeysWithValues: definitionsDTO.map { ($0.code, $0.toDefinition()) })
-
-        parsedNotations[code] = ParsedNotation(notation: notation, questions: definitions)
+        if AppRuntimeMode.isStandaloneDemoEnabled {
+            yaml = try await DemoBackend.shared.fetchNotationYAML(code: code)
+            let notation = try NotationParser.parse(yaml: yaml)
+            let codes = Array(notation.allQuestionCodes)
+            definitionsDTO = await DemoBackend.shared.fetchQuestionDefinitions(codes: codes)
+            let definitions = Dictionary(uniqueKeysWithValues: definitionsDTO.map { ($0.code, $0.toDefinition()) })
+            parsedNotations[code] = ParsedNotation(notation: notation, questions: definitions)
+        } else {
+            yaml = try await apiClient.fetchNotationYAML(code: code)
+            let notation = try NotationParser.parse(yaml: yaml)
+            let codes = Array(notation.allQuestionCodes)
+            definitionsDTO = try await apiClient.fetchQuestionDefinitions(codes: codes)
+            let definitions = Dictionary(uniqueKeysWithValues: definitionsDTO.map { ($0.code, $0.toDefinition()) })
+            parsedNotations[code] = ParsedNotation(notation: notation, questions: definitions)
+        }
     }
 
     // MARK: - Instances
 
     func refreshInstances() async {
         do {
-            let list = try await apiClient.fetchFormationInstances()
+            let list: [FlowInstanceResponseDTO]
+            if AppRuntimeMode.isStandaloneDemoEnabled {
+                list = await DemoBackend.shared.fetchFormationInstances()
+            } else {
+                list = try await apiClient.fetchFormationInstances()
+            }
             instances = list.sorted { $0.id.uuidString > $1.id.uuidString }
 
             for instance in list {
@@ -76,10 +96,18 @@ final class FormationStore: ObservableObject {
     func createInstance(for notation: NotationSummaryDTO) async throws -> FlowInstanceResponseDTO {
         try await ensureNotationLoaded(code: notation.code)
 
-        let response = try await apiClient.createFormationInstance(
-            notationCode: notation.code,
-            payload: CreateFormationInstanceRequest()
-        )
+        let response: FlowInstanceResponseDTO
+        if AppRuntimeMode.isStandaloneDemoEnabled {
+            response = try await DemoBackend.shared.createFormationInstance(
+                notationCode: notation.code,
+                payload: CreateFormationInstanceRequest()
+            )
+        } else {
+            response = try await apiClient.createFormationInstance(
+                notationCode: notation.code,
+                payload: CreateFormationInstanceRequest()
+            )
+        }
 
         instances.insert(response, at: 0)
         #if os(iOS) && canImport(ActivityKit)
@@ -91,7 +119,12 @@ final class FormationStore: ObservableObject {
     }
 
     func loadInstance(id: UUID) async throws -> FlowInstanceResponseDTO {
-        let response = try await apiClient.fetchFormationInstance(id: id)
+        let response: FlowInstanceResponseDTO
+        if AppRuntimeMode.isStandaloneDemoEnabled {
+            response = try await DemoBackend.shared.fetchFormationInstance(id: id)
+        } else {
+            response = try await apiClient.fetchFormationInstance(id: id)
+        }
         try await ensureNotationLoaded(code: response.notationCode)
         updateInstanceInStore(response)
         #if os(iOS) && canImport(ActivityKit)
@@ -112,10 +145,18 @@ final class FormationStore: ObservableObject {
             actorRole: "client"
         )
 
-        let updated = try await apiClient.submitFormationStep(
-            instanceID: instance.id,
-            request: request
-        )
+        let updated: FlowInstanceResponseDTO
+        if AppRuntimeMode.isStandaloneDemoEnabled {
+            updated = try await DemoBackend.shared.submitFormationStep(
+                instanceID: instance.id,
+                request: request
+            )
+        } else {
+            updated = try await apiClient.submitFormationStep(
+                instanceID: instance.id,
+                request: request
+            )
+        }
 
         updateInstanceInStore(updated)
         #if os(iOS) && canImport(ActivityKit)

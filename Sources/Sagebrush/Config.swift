@@ -69,4 +69,14 @@ struct Config {
             URL(string: "https://cognito-idp.\(region).amazonaws.com/\(userPoolId)/.well-known/jwks.json")!
         }
     }
+
+    // Apple Pay Configuration
+    static var applePayMerchantID: String {
+        #if DEBUG
+        return "merchant.com.sagebrush.services.dev"
+        #else
+        return "merchant.com.sagebrush.services"
+        #endif
+    }
+
 }
