@@ -2,22 +2,22 @@ import SwiftUI
 
 enum SagebrushAssets {
     static func image(_ name: String) -> Image {
-        #if canImport(UIKit)
-        if UIImage(named: name, in: .module, with: nil) != nil {
-            return Image(name, bundle: .module)
-        }
-        #elseif canImport(AppKit)
-        if Bundle.module.image(forResource: name) != nil {
-            return Image(name, bundle: .module)
+        // Asset catalog images compile into a .car inside Bundle.module.
+        // On macOS (NSHostingView screenshots) the .car lookup silently returns
+        // an empty image, so we also ship a loose PNG copy in Resources/ and
+        // load it directly as a fallback.
+        #if canImport(AppKit)
+        if let url = Bundle.module.url(forResource: "\(name)@2x", withExtension: "png"),
+           let nsImage = NSImage(contentsOf: url)
+        {
+            nsImage.size = NSSize(
+                width: nsImage.size.width / 2,
+                height: nsImage.size.height / 2
+            )
+            return Image(nsImage: nsImage)
         }
         #endif
-        // Fallback for test contexts where bundle assets resolve to empty
-        switch name {
-        case "SagebrushLogo":
-            return Image(systemName: "building.2.fill")
-        default:
-            return Image(name, bundle: .module)
-        }
+        return Image(name, bundle: .module)
     }
 
     static func color(_ name: String) -> Color {
