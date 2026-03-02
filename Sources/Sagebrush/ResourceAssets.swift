@@ -8,7 +8,7 @@ enum SagebrushAssets {
         // load it directly as a fallback.
         #if canImport(AppKit)
         if let url = Bundle.module.url(forResource: "\(name)@2x", withExtension: "png"),
-           let nsImage = NSImage(contentsOf: url)
+            let nsImage = NSImage(contentsOf: url)
         {
             nsImage.size = NSSize(
                 width: nsImage.size.width / 2,
@@ -35,8 +35,8 @@ enum SagebrushAssets {
     }
 }
 
-private extension Color {
-    init(hex: UInt32, opacity: Double = 1.0) {
+extension Color {
+    fileprivate init(hex: UInt32, opacity: Double = 1.0) {
         self.init(
             red: Double((hex >> 16) & 0xFF) / 255.0,
             green: Double((hex >> 8) & 0xFF) / 255.0,
@@ -45,17 +45,21 @@ private extension Color {
         )
     }
 
-    init(light: Color, dark: Color) {
+    fileprivate init(light: Color, dark: Color) {
         #if canImport(UIKit)
-        self.init(uiColor: UIColor { traits in
-            traits.userInterfaceStyle == .dark
-                ? UIColor(dark) : UIColor(light)
-        })
+        self.init(
+            uiColor: UIColor { traits in
+                traits.userInterfaceStyle == .dark
+                    ? UIColor(dark) : UIColor(light)
+            }
+        )
         #elseif canImport(AppKit)
-        self.init(nsColor: NSColor(name: nil) { appearance in
-            appearance.bestMatch(from: [.darkAqua, .vibrantDark]) != nil
-                ? NSColor(dark) : NSColor(light)
-        })
+        self.init(
+            nsColor: NSColor(name: nil) { appearance in
+                appearance.bestMatch(from: [.darkAqua, .vibrantDark]) != nil
+                    ? NSColor(dark) : NSColor(light)
+            }
+        )
         #else
         self = light
         #endif

@@ -106,9 +106,11 @@ actor DemoBackend {
 
     func fetchQuestionDefinitions(codes: [String]) -> [QuestionDefinitionDTO] {
         ensureSeeded()
-        let allDefinitions = Dictionary(uniqueKeysWithValues: notationsByCode.values.flatMap { bundle in
-            bundle.questionDefinitions.map { ($0.key, $0.value) }
-        })
+        let allDefinitions = Dictionary(
+            uniqueKeysWithValues: notationsByCode.values.flatMap { bundle in
+                bundle.questionDefinitions.map { ($0.key, $0.value) }
+            }
+        )
 
         return codes.compactMap { code in
             if let definition = allDefinitions[code] {
@@ -145,7 +147,9 @@ actor DemoBackend {
             let implicit = implicitAnswer(for: flow, stateID: stateID)
         {
             guard let node = machine(for: flow).nodes[stateID] else {
-                throw DemoBackendError.invalidState("Unknown state '\(stateID.rawValue)' while applying implicit answer")
+                throw DemoBackendError.invalidState(
+                    "Unknown state '\(stateID.rawValue)' while applying implicit answer"
+                )
             }
 
             pendingState = try flow.submitAnswer(implicit)
@@ -273,33 +277,33 @@ actor DemoBackend {
         loadPeople()
 
         let llcNotationYAML = """
-        ---
-        code: new_llc_registration
-        title: Nevada LLC Registration
-        description: Guided filing flow for a new Nevada LLC.
-        respondent_type: org
-        flow:
-          BEGIN:
-            _: annual_or_amended
-          annual_or_amended:
-            original: entity_name__new_llc
-            amended: org__existing_entity
-          entity_name__new_llc:
-            _: registered_agent
-          org__existing_entity:
-            _: registered_agent
-          registered_agent:
-            _: END
-        alignment:
-          BEGIN:
-            _: staff_review
-          staff_review:
-            _: signature__for_registered_agent
-          signature__for_registered_agent:
-            _: filed_with_sos
-          filed_with_sos:
-            _: END
-        """
+            ---
+            code: new_llc_registration
+            title: Nevada LLC Registration
+            description: Guided filing flow for a new Nevada LLC.
+            respondent_type: org
+            flow:
+              BEGIN:
+                _: annual_or_amended
+              annual_or_amended:
+                original: entity_name__new_llc
+                amended: org__existing_entity
+              entity_name__new_llc:
+                _: registered_agent
+              org__existing_entity:
+                _: registered_agent
+              registered_agent:
+                _: END
+            alignment:
+              BEGIN:
+                _: staff_review
+              staff_review:
+                _: signature__for_registered_agent
+              signature__for_registered_agent:
+                _: filed_with_sos
+              filed_with_sos:
+                _: END
+            """
 
         let llcQuestions: [QuestionDefinitionDTO] = [
             QuestionDefinitionDTO(

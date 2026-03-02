@@ -195,14 +195,14 @@ struct ScreenshotGenerationTests {
     }
 }
 
-private extension ScreenshotGenerationTests {
-    struct ScreenshotDevice {
+extension ScreenshotGenerationTests {
+    fileprivate struct ScreenshotDevice {
         let name: String
         let folder: String
         let size: CGSize
     }
 
-    static let screenshotDevices: [ScreenshotDevice] = [
+    fileprivate static let screenshotDevices: [ScreenshotDevice] = [
         ScreenshotDevice(
             name: "iPhone",
             folder: "iphone",
@@ -215,7 +215,7 @@ private extension ScreenshotGenerationTests {
         ),
     ]
 
-    static func outputDirectory() -> URL {
+    fileprivate static func outputDirectory() -> URL {
         if let custom = ProcessInfo.processInfo.environment["SAGEBRUSH_SCREENSHOT_OUTPUT_DIR"], !custom.isEmpty {
             return URL(fileURLWithPath: custom, isDirectory: true)
         }
@@ -225,7 +225,7 @@ private extension ScreenshotGenerationTests {
             .appendingPathComponent("ios-screenshots", isDirectory: true)
     }
 
-    static func prepareDirectory(_ directory: URL) throws {
+    fileprivate static func prepareDirectory(_ directory: URL) throws {
         let fm = FileManager.default
         if fm.fileExists(atPath: directory.path) {
             try fm.removeItem(at: directory)
@@ -239,7 +239,7 @@ private extension ScreenshotGenerationTests {
     }
 
     @MainActor
-    static func captureForAllDevices<V: View>(
+    fileprivate static func captureForAllDevices<V: View>(
         _ viewBuilder: () -> V,
         name: String,
         outputDirectory: URL,
@@ -257,14 +257,15 @@ private extension ScreenshotGenerationTests {
     }
 
     @MainActor
-    static func capture<V: View>(
+    fileprivate static func capture<V: View>(
         _ view: V,
         name: String,
         outputDirectory: URL,
         device: ScreenshotDevice,
         settleFor: TimeInterval
     ) async throws {
-        let content = view
+        let content =
+            view
             .frame(width: device.size.width, height: device.size.height, alignment: .topLeading)
             .background(Color.white)
             .environment(\.colorScheme, .light)
@@ -301,21 +302,22 @@ private extension ScreenshotGenerationTests {
             throw ScreenshotError.renderFailed("Unable to encode PNG for \(name) (\(device.name))")
         }
 
-        let target = outputDirectory
+        let target =
+            outputDirectory
             .appendingPathComponent(device.folder, isDirectory: true)
             .appendingPathComponent("\(name).png")
         try data.write(to: target, options: .atomic)
     }
 
     @MainActor
-    static func pumpMainRunLoop(for seconds: TimeInterval) {
+    fileprivate static func pumpMainRunLoop(for seconds: TimeInterval) {
         let end = Date().addingTimeInterval(seconds)
         while Date() < end {
             _ = RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.01))
         }
     }
 
-    static func writeReviewHTML(in outputDirectory: URL) throws {
+    fileprivate static func writeReviewHTML(in outputDirectory: URL) throws {
         let fm = FileManager.default
         let iphoneDir = outputDirectory.appendingPathComponent("iphone", isDirectory: true)
         let ipadDir = outputDirectory.appendingPathComponent("ipad", isDirectory: true)
@@ -333,10 +335,12 @@ private extension ScreenshotGenerationTests {
             let iphonePath = iphoneDir.appendingPathComponent(name).path
             let ipadPath = ipadDir.appendingPathComponent(name).path
 
-            let iphoneCell = fm.fileExists(atPath: iphonePath)
+            let iphoneCell =
+                fm.fileExists(atPath: iphonePath)
                 ? "<img src=\"./iphone/\(name)\" alt=\"\(name) iPhone\" />"
                 : "<div class=\"missing\">Missing iPhone capture</div>"
-            let ipadCell = fm.fileExists(atPath: ipadPath)
+            let ipadCell =
+                fm.fileExists(atPath: ipadPath)
                 ? "<img src=\"./ipad/\(name)\" alt=\"\(name) iPad\" />"
                 : "<div class=\"missing\">Missing iPad capture</div>"
 
@@ -356,89 +360,89 @@ private extension ScreenshotGenerationTests {
         }.joined(separator: "\n")
 
         let html = """
-        <!doctype html>
-        <html lang="en">
-        <head>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>Sagebrush iOS Screenshot Review</title>
-          <style>
-            :root { color-scheme: light; }
-            body {
-              margin: 0;
-              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-              background: #f3f5f7;
-              color: #0f1720;
-            }
-            header {
-              position: sticky;
-              top: 0;
-              background: rgba(255, 255, 255, 0.9);
-              backdrop-filter: blur(8px);
-              border-bottom: 1px solid #d6dce3;
-              padding: 12px 20px;
-            }
-            main {
-              max-width: 1660px;
-              margin: 0 auto;
-              padding: 20px;
-            }
-            .row {
-              margin: 0 0 24px 0;
-            }
-            .row h2 {
-              margin: 0 0 12px 0;
-              font-size: 15px;
-              font-weight: 700;
-            }
-            .grid {
-              display: grid;
-              grid-template-columns: repeat(2, minmax(280px, 1fr));
-              gap: 16px;
-            }
-            .card {
-              margin: 0;
-              border: 1px solid #d6dce3;
-              background: #ffffff;
-              border-radius: 12px;
-              overflow: hidden;
-              box-shadow: 0 6px 20px rgba(16, 24, 40, 0.08);
-            }
-            .card h3 {
-              margin: 0;
-              padding: 10px 12px;
-              font-size: 14px;
-              font-weight: 600;
-              border-bottom: 1px solid #e5e7eb;
-              background: #f8fafc;
-            }
-            .card img {
-              width: 100%;
-              display: block;
-              background: white;
-            }
-            .missing {
-              padding: 24px 12px;
-              color: #6b7280;
-              font-size: 13px;
-            }
-            @media (max-width: 1100px) {
-              .grid {
-                grid-template-columns: 1fr;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          <header>
-            <strong>Sagebrush iOS Screenshot Review (iPhone + iPad)</strong>
-          </header>
-          <main>
-            \(rows)
-          </main>
-        </body>
-        </html>
-        """
+            <!doctype html>
+            <html lang="en">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>Sagebrush iOS Screenshot Review</title>
+              <style>
+                :root { color-scheme: light; }
+                body {
+                  margin: 0;
+                  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                  background: #f3f5f7;
+                  color: #0f1720;
+                }
+                header {
+                  position: sticky;
+                  top: 0;
+                  background: rgba(255, 255, 255, 0.9);
+                  backdrop-filter: blur(8px);
+                  border-bottom: 1px solid #d6dce3;
+                  padding: 12px 20px;
+                }
+                main {
+                  max-width: 1660px;
+                  margin: 0 auto;
+                  padding: 20px;
+                }
+                .row {
+                  margin: 0 0 24px 0;
+                }
+                .row h2 {
+                  margin: 0 0 12px 0;
+                  font-size: 15px;
+                  font-weight: 700;
+                }
+                .grid {
+                  display: grid;
+                  grid-template-columns: repeat(2, minmax(280px, 1fr));
+                  gap: 16px;
+                }
+                .card {
+                  margin: 0;
+                  border: 1px solid #d6dce3;
+                  background: #ffffff;
+                  border-radius: 12px;
+                  overflow: hidden;
+                  box-shadow: 0 6px 20px rgba(16, 24, 40, 0.08);
+                }
+                .card h3 {
+                  margin: 0;
+                  padding: 10px 12px;
+                  font-size: 14px;
+                  font-weight: 600;
+                  border-bottom: 1px solid #e5e7eb;
+                  background: #f8fafc;
+                }
+                .card img {
+                  width: 100%;
+                  display: block;
+                  background: white;
+                }
+                .missing {
+                  padding: 24px 12px;
+                  color: #6b7280;
+                  font-size: 13px;
+                }
+                @media (max-width: 1100px) {
+                  .grid {
+                    grid-template-columns: 1fr;
+                  }
+                }
+              </style>
+            </head>
+            <body>
+              <header>
+                <strong>Sagebrush iOS Screenshot Review (iPhone + iPad)</strong>
+              </header>
+              <main>
+                \(rows)
+              </main>
+            </body>
+            </html>
+            """
 
         try html.write(
             to: outputDirectory.appendingPathComponent("review.html"),
@@ -447,7 +451,7 @@ private extension ScreenshotGenerationTests {
         )
     }
 
-    static func requireFirstNotation() async throws -> NotationSummaryDTO {
+    fileprivate static func requireFirstNotation() async throws -> NotationSummaryDTO {
         let notations = try await APIClient.shared.fetchNotationSummaries()
         guard let first = notations.first else {
             throw ScreenshotError.renderFailed("No notations available in demo backend")
@@ -455,7 +459,9 @@ private extension ScreenshotGenerationTests {
         return first
     }
 
-    static func answer(for component: QuestionStepDescriptor.Component) -> NotationEngine.FlowInstance.AnswerValue {
+    fileprivate static func answer(
+        for component: QuestionStepDescriptor.Component
+    ) -> NotationEngine.FlowInstance.AnswerValue {
         switch component {
         case .singleLineText:
             return .string("Sagebrush Demo LLC")
