@@ -18,8 +18,8 @@ struct LoginView: View {
             // Gradient background
             LinearGradient(
                 colors: [
-                    Color("SagebrushGreen"),
-                    Color("SagebrushGreen").opacity(0.8),
+                    SagebrushAssets.color("SagebrushGreen"),
+                    SagebrushAssets.color("SagebrushGreen").opacity(0.8),
                     Color.white,
                 ],
                 startPoint: .topLeading,
@@ -34,7 +34,7 @@ struct LoginView: View {
 
                     // Hero section
                     VStack(spacing: 16) {
-                        Image("SagebrushLogo")
+                        SagebrushAssets.image("SagebrushLogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 120, height: 120)
@@ -93,7 +93,7 @@ struct LoginView: View {
                         AuthenticationButton(
                             title: "Continue with Passkey",
                             icon: "key.fill",
-                            backgroundColor: Color("SagebrushGreen").opacity(0.9),
+                            backgroundColor: SagebrushAssets.color("SagebrushGreen").opacity(0.9),
                             foregroundColor: .white,
                             isPressed: pressedButton == .passkey,
                             isLoading: isLoading && pressedButton == .passkey
@@ -119,7 +119,7 @@ struct LoginView: View {
                             title: "Sign in with Email",
                             icon: "envelope.fill",
                             backgroundColor: Color.white.opacity(0.9),
-                            foregroundColor: Color("SagebrushGreen"),
+                            foregroundColor: SagebrushAssets.color("SagebrushGreen"),
                             isPressed: pressedButton == .email,
                             isLoading: isLoading && pressedButton == .email
                         ) {

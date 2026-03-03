@@ -140,6 +140,14 @@ class AuthenticationManager: NSObject, ObservableObject {
     // MARK: - Private Methods
 
     private func checkAuthenticationStatus() async {
+        if AppRuntimeMode.isStandaloneDemoEnabled {
+            isAuthenticated = true
+            userEmail = "demo@sagebrush.services"
+            userGivenName = "Demo"
+            userGroups = ["admin"]
+            return
+        }
+
         do {
             if await keychain.hasValidTokens() {
                 // Load and validate tokens

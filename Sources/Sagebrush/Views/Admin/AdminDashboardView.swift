@@ -9,12 +9,12 @@ struct AdminDashboardView: View {
             Section("Management") {
                 NavigationLink(destination: PeopleListView()) {
                     Label("People", systemImage: "person.2.fill")
-                        .foregroundColor(Color("SagebrushGreen"))
+                        .foregroundColor(SagebrushAssets.color("SagebrushGreen"))
                 }
 
                 NavigationLink(destination: QuestionsListView()) {
                     Label("Questions", systemImage: "questionmark.circle.fill")
-                        .foregroundColor(Color("SagebrushGreen"))
+                        .foregroundColor(SagebrushAssets.color("SagebrushGreen"))
                 }
             }
 

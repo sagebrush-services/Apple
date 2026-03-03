@@ -10,7 +10,7 @@ struct WelcomeView: View {
             // Gradient background
             LinearGradient(
                 colors: [
-                    Color("SagebrushGreen").opacity(0.1),
+                    SagebrushAssets.color("SagebrushGreen").opacity(0.1),
                     Color.white,
                 ],
                 startPoint: .top,
@@ -74,7 +74,7 @@ struct WelcomeScreen: View {
             // Icon
             Image(systemName: iconName)
                 .font(.system(size: 80, weight: .light))
-                .foregroundColor(Color("SagebrushGreen"))
+                .foregroundColor(SagebrushAssets.color("SagebrushGreen"))
                 .padding(.bottom, 16)
 
             // Headline
@@ -108,7 +108,7 @@ struct FinalWelcomeScreen: View {
             Spacer()
 
             // Logo
-            Image("SagebrushLogo")
+            SagebrushAssets.image("SagebrushLogo")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 140, height: 140)
@@ -137,7 +137,7 @@ struct FinalWelcomeScreen: View {
                     .font(.system(size: 17, weight: .semibold, design: .default))
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
-                    .background(Color("SagebrushGreen"))
+                    .background(SagebrushAssets.color("SagebrushGreen"))
                     .foregroundColor(.white)
                     .cornerRadius(16)
                     .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)

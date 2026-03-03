@@ -113,7 +113,7 @@ private struct FormationInstanceRow: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
             } else {
-                Text(instance.isCompleted ? "Completed" : "In Progress")
+                Text(instance.isFlowComplete ? "Ready to Pay" : "In Progress")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }

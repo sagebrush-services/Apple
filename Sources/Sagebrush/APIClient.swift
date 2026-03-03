@@ -134,6 +134,33 @@ class APIClient: ObservableObject {
         }
     }
 
+    func makeJSONRequest<T: Decodable>(
+        method: String,
+        endpoint: String,
+        body: Data? = nil,
+        decoder: JSONDecoder = JSONDecoder()
+    ) async throws -> T {
+        guard let url = URL(string: endpoint, relativeTo: baseURL) else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        request.httpBody = body
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw APIError.httpError(httpResponse.statusCode)
+        }
+
+        return try decoder.decode(T.self, from: data)
+    }
+
     private func getValidAccessToken() async throws -> String {
         // Check if current token is still valid
         if await keychain.hasValidTokens() {

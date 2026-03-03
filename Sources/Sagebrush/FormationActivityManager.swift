@@ -58,15 +58,15 @@ final class FormationActivityManager {
         }
 
         let state = FormationProgressAttributes.ContentState(
-            stage: instance.progressStage ?? (instance.isCompleted ? "Completed" : "In Progress"),
-            percentComplete: instance.progressPercent ?? (instance.isCompleted ? 1.0 : 0.0),
+            stage: instance.progressStage ?? (instance.isFlowComplete ? "Ready to Pay" : "In Progress"),
+            percentComplete: instance.progressPercent ?? (instance.isFlowComplete ? 1.0 : 0.0),
             lastUpdated: Date()
         )
 
         Task {
             await activity.update(using: state)
 
-            if instance.isCompleted {
+            if instance.isFlowComplete {
                 await activity.end(dismissalPolicy: .immediate)
                 activities.removeValue(forKey: instance.id)
             }

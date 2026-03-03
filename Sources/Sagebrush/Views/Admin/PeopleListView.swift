@@ -4,12 +4,13 @@ import SwiftUI
 struct PeopleListView: View {
     @EnvironmentObject var authManager: AuthenticationManager
     @StateObject private var apiClient: AdminAPIClient
-    @State private var people: [Person] = []
+    @State private var people: [Person]
     @State private var isLoading = false
     @State private var errorMessage: String?
     @State private var searchText = ""
 
-    init() {
+    init(preloaded: [Person] = []) {
+        _people = State(initialValue: preloaded)
         _apiClient = StateObject(
             wrappedValue: AdminAPIClient(
                 baseURL: URL(string: Config.environment.apiBaseURL)!,
@@ -67,7 +68,7 @@ struct PeopleListView: View {
             await loadPeople()
         }
         .task {
-            await loadPeople()
+            if people.isEmpty { await loadPeople() }
         }
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK") { errorMessage = nil }
@@ -81,7 +82,11 @@ struct PeopleListView: View {
         errorMessage = nil
 
         do {
-            people = try await apiClient.fetchPeople()
+            if AppRuntimeMode.isStandaloneDemoEnabled {
+                people = await DemoBackend.shared.fetchPeople()
+            } else {
+                people = try await apiClient.fetchPeople()
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
