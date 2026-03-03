@@ -3,7 +3,7 @@
 Run:
 
 ```bash
-bash scripts/capture_ios_screenshots.sh
+./scripts/capture_ios_screenshots.sh
 ```
 
 This does the following:
